@@ -19,9 +19,9 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-group = 'com.awesoft.cclink'
-version = ccl_version+'-'+mc_version
-archivesBaseName = 'cclink'
+group = 'com.awesoft.ccx'
+version = ccx_version+'-'+mc_version
+archivesBaseName = 'ccx'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -44,7 +44,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                cclink {
+                ccx {
                     source sourceSets.main
                 }
             }
@@ -61,7 +61,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                cclink {
+                ccx {
                     source sourceSets.main
                 }
             }
@@ -81,10 +81,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'cclink', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'ccx', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                cclink {
+                ccx {
                     source sourceSets.main
                 }
             }
@@ -118,16 +118,16 @@ dependencies {
 
     //runtimeOnly fg.deobf("curse.maven:advanced-peripherals-431725:5256278")
 
-    implementation fg.deobf("curse.maven:curios-309927:6418456")
+    //implementation fg.deobf("curse.maven:curios-309927:6418456")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "cclink",
+                "Specification-Title"     : "ccx",
                 //"Specification-Vendor": "authors",
-                "Specification-Version"   : ccl_version,
+                "Specification-Version"   : ccx_version,
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.version,
                 //"Implementation-Vendor": "authors",

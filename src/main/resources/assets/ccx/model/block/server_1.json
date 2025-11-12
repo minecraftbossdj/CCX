@@ -1,0 +1,20 @@
+{
+    "parent": "block/block",
+	"textures": {
+		"0": "ccx:block/rack_inside",
+		"1": "ccx:block/rack_server_top",
+		"2": "ccx:block/rack_server",
+		"particle": "ccx:block/rack_inside"
+	},
+	"elements": [
+		{
+			"from": [1, 11, 1],
+			"to": [15, 14, 16],
+			"faces": {
+				"north": {"uv": [1, 2, 15, 5], "texture": "#2"},
+				"up": {"uv": [1, 0, 15, 15], "texture": "#1"},
+				"down": {"uv": [1, 0, 15, 15], "texture": "#0"}
+			}
+		}
+	]
+}

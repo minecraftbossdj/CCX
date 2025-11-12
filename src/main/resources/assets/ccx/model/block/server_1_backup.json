@@ -1,0 +1,35 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "ccx:block/rack_inside",
+		"1": "ccx:block/rack_server_top",
+		"2": "ccx:block/rack_server",
+        "empty": "minecraft:block/air",
+		"particle": "ccx:block/rack_inside"
+	},
+	"elements": [
+		{
+			"name": "server_1",
+			"from": [1, 11, 1],
+			"to": [15, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 12, 0]},
+			"faces": {
+				"north": {"uv": [1, 2, 15, 5], "texture": "#2"},
+				"east": {"uv": [0, 0, 15, 3], "texture": "#empty"},
+				"south": {"uv": [0, 0, 14, 3], "texture": "#empty"},
+				"west": {"uv": [0, 0, 15, 3], "texture": "#empty"},
+				"up": {"uv": [1, 0, 15, 15], "texture": "#1"},
+				"down": {"uv": [1, 0, 15, 15], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "rack_1",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}
