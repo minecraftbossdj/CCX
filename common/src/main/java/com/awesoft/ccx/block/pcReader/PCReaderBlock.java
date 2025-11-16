@@ -161,6 +161,7 @@ public class PCReaderBlock extends BaseEntityBlock {
     @javax.annotation.Nullable
     public static ServerComputer getServerComputer(MinecraftServer server, ItemStack stack) {
         if (server != null) {
+            if (ServerContext.get(server) == null) return null;
             return getServerComputer(ServerContext.get(server).registry(), stack);
         } else {
             return null;
@@ -219,6 +220,7 @@ public class PCReaderBlock extends BaseEntityBlock {
             if (slotStackReal.isEmpty() || slotStackReal.getCount() == 0) return InteractionResult.FAIL;
             CompoundTag tag = slotStackReal.getTag();
             ServerComputerRegistry registry = ServerContext.get(player.getServer()).registry();
+            if (ServerContext.get(player.getServer()) == null) return InteractionResult.FAIL;
             ServerComputer comp = getServerComputer(registry, slotStackReal);
             if (comp == null) {
                 player.displayClientMessage(Component.literal("That item isn't a computer type item!"),true);

@@ -82,6 +82,7 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
     @javax.annotation.Nullable
     public static ServerComputer getServerComputer(MinecraftServer server, ItemStack stack) {
         if (server != null) {
+            if (ServerContext.get(server) == null) return null;
             return getServerComputer(ServerContext.get(server).registry(), stack);
         } else {
             return null;

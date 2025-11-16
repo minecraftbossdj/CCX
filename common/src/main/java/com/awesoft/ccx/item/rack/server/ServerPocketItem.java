@@ -229,6 +229,7 @@ public class ServerPocketItem extends Item implements IComputerItem, IMedia, ICo
     }
 
     public ServerBrain getOrCreateBrain(ServerLevel level, ServerHolder holder, ItemStack stack) {
+        if (ServerContext.get(level.getServer()) == null) return null; //this will work trust!
         ServerComputerRegistry registry = ServerContext.get(level.getServer()).registry();
         ServerServerComputer computer = getServerComputer(registry, stack);
         if (computer != null) {
