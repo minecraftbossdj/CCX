@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "ccx:peripheral_card",
+    "ccx:inventory_card",
+    "ccx:fake_card"
+  ]
+}

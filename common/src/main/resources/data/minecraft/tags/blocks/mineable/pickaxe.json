@@ -1,5 +1,7 @@
 {
   "values": [
-    "ccx:rack"
+    "ccx:rack",
+    "ccx:pcie_hub",
+    "ccx:pc_reader"
   ]
 }

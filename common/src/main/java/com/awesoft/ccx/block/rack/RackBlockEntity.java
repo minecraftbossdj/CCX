@@ -120,7 +120,7 @@ public class RackBlockEntity extends BlockEntity implements Container {
             if (stack.getItem() instanceof ServerPocketItem item) {
                 ServerBrain brain = item.getOrCreateBrain(serverLevel, new ServerHolder.RackHolder(this, slot), stack);
 
-                // Loop through all six sides for this rack
+                // loop through all six sides for this rack
                 for (Direction dir : Direction.values()) {
                     IPeripheral periph = peripherals.get(dir);
                     ComputerSide side = DirectionLib.toComputerSide(dir, facing);
@@ -128,7 +128,7 @@ public class RackBlockEntity extends BlockEntity implements Container {
                     if (periph != null) {
                         brain.computer().setPeripheral(side, periph);
                     } else {
-                        // Clear any previously attached peripheral if now missing
+                        // clear any previously attached peripheral if no longer attached/alive
                         brain.computer().setPeripheral(side, null);
                     }
                 }
@@ -153,7 +153,6 @@ public class RackBlockEntity extends BlockEntity implements Container {
 
     public void neighborChanged(Direction dir, BlockPos neighborPos) {
         if (level == null || level.isClientSide) return;
-        CCX.LOGGER.info("Neighbor changed at {}", neighborPos);
 
         BlockEntity neighbor = level.getBlockEntity(neighborPos);
         if (neighbor == null) return;

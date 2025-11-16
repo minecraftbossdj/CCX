@@ -1,9 +1,12 @@
 package com.awesoft.ccx.block.rack;
 
+import com.awesoft.ccx.CCX;
 import com.awesoft.ccx.registry.CCXItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -53,10 +56,17 @@ public class RackInventory extends SimpleContainer {
 
     @Override
     public void setItem(int slot, ItemStack stack) {
-        if (canPlaceItem(slot,stack)) {
-            super.setItem(slot, stack);
-            parent.onChange();
+        if (parent.getLevel() == null) {
+            CCX.LOGGER.info("how what");
+            return;
         }
+        if (canPlaceItem(slot, stack)) {
+            super.setItem(slot, stack);
+        } else {
+            BlockPos pos = parent.getBlockPos();
+            Containers.dropItemStack(parent.getLevel(), pos.getX(), pos.getY()+1, pos.getZ(), stack);
+        }
+        parent.onChange();
     }
 
     @Override

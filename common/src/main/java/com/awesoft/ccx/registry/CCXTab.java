@@ -19,6 +19,11 @@ public class CCXTab {
                     .displayItems((displayParms,output) ->{
                         output.accept(CCXBlocks.RACK.get());
                         output.accept(CCXItems.SERVER_ADVANCED.get());
+                        output.accept(CCXBlocks.PCIE_HUB.get());
+                        //output.accept(CCXItems.PERIPHERAL_CARD.get());
+                        output.accept(CCXItems.INVENTORY_CARD.get());
+                        output.accept(CCXItems.FAKE_CARD.get());
+                        output.accept(CCXBlocks.PC_READER.get());
                     })
                     .build()
     );

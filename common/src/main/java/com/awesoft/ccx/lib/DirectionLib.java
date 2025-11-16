@@ -40,4 +40,13 @@ public class DirectionLib {
             default -> ComputerSide.BACK;
         };
     }
+    public static ComputerSide fromString(String string) {
+        if (string.equalsIgnoreCase("front")) return ComputerSide.FRONT;
+        if (string.equalsIgnoreCase("back")) return ComputerSide.BACK;
+        if (string.equalsIgnoreCase("top")) return ComputerSide.TOP;
+        if (string.equalsIgnoreCase("bottom")) return ComputerSide.BOTTOM;
+        if (string.equalsIgnoreCase("right")) return ComputerSide.RIGHT;
+        if (string.equalsIgnoreCase("left")) return ComputerSide.LEFT;
+        return null;
+    }
 }

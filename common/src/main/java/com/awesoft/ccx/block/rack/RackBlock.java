@@ -145,7 +145,7 @@ public class RackBlock extends BaseEntityBlock {
                     }
                 }
                 if (side != null) {
-                    rack.neighborChanged(side, pos);
+                    rack.neighborChanged(side, fromPos);
                 }
             }
         }

@@ -1,5 +1,10 @@
 {
   "itemGroup.ccx.main": "CCX: Main",
   "block.ccx.rack": "Rack",
-  "item.ccx.server_advanced": "Server Board"
+  "item.ccx.server_advanced": "Server Board",
+  "block.ccx.pcie_hub": "PCIe Hub",
+  "item.ccx.peripheral_card": "Peripheral Card (NOT IMPLEMENTED)",
+  "item.ccx.inventory_card": "Inventory Card",
+  "item.ccx.fake_card": "Fake Card",
+  "block.ccx.pc_reader": "PC Reader"
 }
