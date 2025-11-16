@@ -3,8 +3,12 @@ package com.awesoft.ccx.block.rack;
 import com.awesoft.ccx.CCX;
 import com.awesoft.ccx.item.rack.server.ServerPocketItem;
 import com.awesoft.ccx.registry.CCXBlockEntities;
+import com.awesoft.ccx.registry.CCXItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
@@ -29,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RackBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final IntegerProperty SERVER_SLOT = IntegerProperty.create("server_slot", 0, 4);
+    public static final IntegerProperty SERVER_SLOT = IntegerProperty.create("server_slot", 0, 8);
 
     public RackBlock(Properties pProperties) {
         super(pProperties);
@@ -117,7 +121,7 @@ public class RackBlock extends BaseEntityBlock {
                 level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8f, 1.0f);
                 return InteractionResult.SUCCESS;
             }
-        } else if (slotStack.isEmpty() && held.getItem() instanceof ServerPocketItem) {
+        } else if (slotStack.isEmpty() && held.getItem() instanceof ServerPocketItem || slotStack.isEmpty() && held.is(CCXItems.SERVER_REMOTE.get())) {
             ItemStack insert = held.copy();
             insert.setCount(1);
             rack.getInventory().setItem(slot, insert);
@@ -126,6 +130,21 @@ public class RackBlock extends BaseEntityBlock {
             level.sendBlockUpdated(pos, state, state, 3);
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8f, 1.0f);
             return InteractionResult.SUCCESS;
+        } else if (!slotStack.isEmpty() && held.is(CCXItems.REMOTE_TERMINAL.get())) {
+            CCX.LOGGER.info("kill");
+            if (slotStack.is(CCXItems.SERVER_REMOTE.get())) {
+                CCX.LOGGER.info("hi!");
+                CompoundTag tag = held.getOrCreateTag();
+                CompoundTag rackPos = new CompoundTag();
+                rackPos.putInt("x", rack.getBlockPos().getX());
+                rackPos.putInt("y", rack.getBlockPos().getY());
+                rackPos.putInt("z", rack.getBlockPos().getZ());
+
+                tag.put("rackPos", rackPos);
+                tag.putInt("slot", slot);
+                player.displayClientMessage(Component.literal("Bound to Remote Server!"), true);
+                return InteractionResult.SUCCESS;
+            }
         }
 
         return InteractionResult.CONSUME;

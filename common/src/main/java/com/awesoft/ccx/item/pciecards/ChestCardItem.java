@@ -8,12 +8,16 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ChestCardItem extends BaseCardItem {
 
@@ -62,6 +66,14 @@ public class ChestCardItem extends BaseCardItem {
             player.displayClientMessage(Component.literal("Cleared inventory pos!"),true);
         }
         return InteractionResultHolder.fail(player.getItemInHand(interactionHand));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
+        if (itemStack.getTag() == null || itemStack.getTag().get("invPos") == null) return;
+        CompoundTag pos = itemStack.getTag().getCompound("invPos");
+        String posString = pos.getInt("x")+" "+pos.getInt("y")+" "+pos.getInt("z");
+        list.add(Component.literal("Bound block: ").append(posString));
     }
 
 }

@@ -6,5 +6,7 @@
   "item.ccx.peripheral_card": "Peripheral Card (NOT IMPLEMENTED)",
   "item.ccx.inventory_card": "Inventory Card",
   "item.ccx.fake_card": "Fake Card",
-  "block.ccx.pc_reader": "PC Reader"
+  "block.ccx.pc_reader": "PC Reader",
+  "item.ccx.server_remote": "Remote Server",
+  "item.ccx.remote_terminal": "Remote Terminal"
 }

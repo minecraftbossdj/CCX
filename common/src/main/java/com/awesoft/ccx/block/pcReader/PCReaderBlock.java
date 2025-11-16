@@ -123,7 +123,6 @@ public class PCReaderBlock extends BaseEntityBlock {
 
         float pixelX = x * 16.0f;
         float pixelY = (float)(hitVec.y * 16.0f);
-        CCX.LOGGER.info(pixelX+" and "+pixelY);
 
         if (pixelY < 16 || pixelY > 16) return -1;
 
@@ -182,8 +181,6 @@ public class PCReaderBlock extends BaseEntityBlock {
 
         int slot = getSlotFromHit(state,hit);
 
-        CCX.LOGGER.info(slot);
-
         ItemStack held = player.getItemInHand(hand);
         ItemStack slotStack = pcreader.getInventory().getItem(0);
 
@@ -221,7 +218,6 @@ public class PCReaderBlock extends BaseEntityBlock {
             ItemStack slotStackReal = pcreader.getInventory().getItem(0);
             if (slotStackReal.isEmpty() || slotStackReal.getCount() == 0) return InteractionResult.FAIL;
             CompoundTag tag = slotStackReal.getTag();
-            CCX.LOGGER.info(tag);
             ServerComputerRegistry registry = ServerContext.get(player.getServer()).registry();
             ServerComputer comp = getServerComputer(registry, slotStackReal);
             if (comp == null) {

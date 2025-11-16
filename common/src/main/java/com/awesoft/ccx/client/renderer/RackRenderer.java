@@ -4,6 +4,7 @@ import com.awesoft.ccx.CCX;
 import com.awesoft.ccx.block.rack.RackBlock;
 import com.awesoft.ccx.block.rack.RackBlockEntity;
 import com.awesoft.ccx.registry.CCXBlocks;
+import com.awesoft.ccx.registry.CCXItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,9 +32,16 @@ public class RackRenderer implements BlockEntityRenderer<RackBlockEntity> {
             ItemStack stack = blockEntity.getInventory().getItem(i);
             if (!stack.isEmpty()) {
 
-                BlockState serverState = CCXBlocks.RACK.get()
-                        .defaultBlockState()
-                        .setValue(RackBlock.SERVER_SLOT, i+1);
+                BlockState serverState;
+                if (stack.is(CCXItems.SERVER_REMOTE.get())) {
+                    serverState = CCXBlocks.RACK.get()
+                            .defaultBlockState()
+                            .setValue(RackBlock.SERVER_SLOT, i + 5);
+                } else {
+                     serverState = CCXBlocks.RACK.get()
+                            .defaultBlockState()
+                            .setValue(RackBlock.SERVER_SLOT, i + 1);
+                }
 
                 BakedModel model = mc.getModelManager().getBlockModelShaper().getBlockModel(serverState);
 
