@@ -12,7 +12,6 @@ import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 public class CCXClient {
     public static void init() {
         CCX.LOGGER.info("CCX: Main Client successfully loaded!");
-        CCXDronesClient.init();
     }
 
     public static void BERendererRegister() {

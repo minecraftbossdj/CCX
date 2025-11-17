@@ -3,6 +3,7 @@ package com.awesoft.fabric.client;
 import com.awesoft.ccx.client.CCXClient;
 import com.awesoft.ccx.client.renderer.RackRenderer;
 import com.awesoft.ccx.registry.CCXBlockEntities;
+import com.awesoft.ccx_drones.client.CCXDronesClient;
 import com.awesoft.ccx_drones.client.screen.DroneScreen;
 import com.awesoft.ccx_drones.registry.CCXDMenu;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
@@ -19,5 +20,6 @@ public final class CCXFabricClient implements ClientModInitializer {
                 DroneScreen::new
         );
         CCXClient.init();
+        CCXDronesClient.init();
     }
 }
