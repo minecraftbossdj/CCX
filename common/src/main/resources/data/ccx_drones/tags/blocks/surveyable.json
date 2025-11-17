@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:grass_block",
+    "#minecraft:leaves",
+    "#minecraft:logs",
+    "#minecraft:planks",
+    "#minecraft:stone_bricks",
+    "#minecraft:stairs",
+    "#minecraft:slabs",
+    "#minecraft:fences",
+    "#minecraft:walls"
+  ]
+}

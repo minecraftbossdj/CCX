@@ -4,6 +4,7 @@ import com.awesoft.ccx.registry.CCXBlockEntities;
 import com.awesoft.ccx.registry.CCXBlocks;
 import com.awesoft.ccx.registry.CCXItems;
 import com.awesoft.ccx.registry.CCXTab;
+import com.awesoft.ccx_drones.CCXDrones;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,5 +19,6 @@ public final class CCX {
         CCXItems.register();
         CCXTab.register();
         LOGGER.info("CCX: Main successfully loaded!");
+        CCXDrones.init();
     }
 }
