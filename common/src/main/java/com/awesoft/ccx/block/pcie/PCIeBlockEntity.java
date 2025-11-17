@@ -31,11 +31,15 @@ import java.util.Map;
 
 public class PCIeBlockEntity extends BlockEntity implements Container {
 
+    private boolean initialized = false;
+    boolean suppressUpdates = false;
+
     public void onChange() {
         setChanged();
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
+        if (level == null || level.isClientSide) return;
+        if (suppressUpdates) return;
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
     }
 
     private final PCIeInventory inventory = new PCIeInventory(this,4);
@@ -44,13 +48,14 @@ public class PCIeBlockEntity extends BlockEntity implements Container {
         super(CCXBlockEntities.PCIE_HUB_ENTITY.get(), pPos, pBlockState);
     }
 
-    private boolean initialized = false;
-
     @Override
     public void setLevel(Level level) {
         super.setLevel(level);
         this.level = level;
-        if (level != null && !level.isClientSide && !initialized) {
+        if (level == null || level.isClientSide) return;
+
+        if (!initialized && level instanceof ServerLevel serverLevel) {
+            if (serverLevel.getServer() == null) return;
             initialized = true;
         }
     }
@@ -107,8 +112,13 @@ public class PCIeBlockEntity extends BlockEntity implements Container {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("Inventory")) {
-            inventory.load(tag.getCompound("Inventory"));
+        suppressUpdates = true;
+        try {
+            if (tag.contains("Inventory")) {
+                inventory.load(tag.getCompound("Inventory"));
+            }
+        } finally {
+            suppressUpdates = false;
         }
     }
 

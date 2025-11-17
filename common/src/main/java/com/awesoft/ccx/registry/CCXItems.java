@@ -1,6 +1,7 @@
 package com.awesoft.ccx.registry;
 
 import com.awesoft.ccx.CCX;
+import com.awesoft.ccx.item.AdvancedRemoteTerminalItem;
 import com.awesoft.ccx.item.RemoteTerminalItem;
 import com.awesoft.ccx.item.pciecards.BaseCardItem;
 import com.awesoft.ccx.item.pciecards.ChestCardItem;
@@ -37,6 +38,10 @@ public class CCXItems {
 
     public static final RegistrySupplier<Item> REMOTE_TERMINAL = ITEMS.register("remote_terminal",
             () -> new RemoteTerminalItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistrySupplier<Item> REMOTE_TERMINAL_ADVANCED = ITEMS.register("remote_terminal_advanced",
+            () -> new AdvancedRemoteTerminalItem(new Item.Properties().stacksTo(1))
     );
 
     public static void register() {

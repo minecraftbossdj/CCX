@@ -229,7 +229,7 @@ public class ServerPocketItem extends Item implements IComputerItem, IMedia, ICo
     }
 
     public ServerBrain getOrCreateBrain(ServerLevel level, ServerHolder holder, ItemStack stack) {
-        if (ServerContext.get(level.getServer()) == null) return null; //this will work trust!
+        try {ServerContext.get(level.getServer());} catch (Exception e) {return null;}
         ServerComputerRegistry registry = ServerContext.get(level.getServer()).registry();
         ServerServerComputer computer = getServerComputer(registry, stack);
         if (computer != null) {
@@ -272,6 +272,9 @@ public class ServerPocketItem extends Item implements IComputerItem, IMedia, ICo
 
     @Nullable
     public static ServerServerComputer getServerComputer(MinecraftServer server, ItemStack stack) {
+        try {ServerContext.get(server);} catch (Exception e) {
+            return null;
+        }
         return getServerComputer(ServerContext.get(server).registry(), stack);
     }
 

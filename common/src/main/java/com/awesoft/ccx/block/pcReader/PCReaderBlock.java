@@ -161,7 +161,7 @@ public class PCReaderBlock extends BaseEntityBlock {
     @javax.annotation.Nullable
     public static ServerComputer getServerComputer(MinecraftServer server, ItemStack stack) {
         if (server != null) {
-            if (ServerContext.get(server) == null) return null;
+            try {ServerContext.get(server);} catch (Exception e) {return null;}
             return getServerComputer(ServerContext.get(server).registry(), stack);
         } else {
             return null;
@@ -212,7 +212,7 @@ public class PCReaderBlock extends BaseEntityBlock {
             }
         } else {
             if (player.getServer() == null) {
-                CCX.LOGGER.info("youll never see this message! isnt that interesting?");
+                CCX.LOGGER.info("you'll never see this message! isn't that interesting?");
                 return InteractionResult.CONSUME;
             }
 
@@ -220,7 +220,7 @@ public class PCReaderBlock extends BaseEntityBlock {
             if (slotStackReal.isEmpty() || slotStackReal.getCount() == 0) return InteractionResult.FAIL;
             CompoundTag tag = slotStackReal.getTag();
             ServerComputerRegistry registry = ServerContext.get(player.getServer()).registry();
-            if (ServerContext.get(player.getServer()) == null) return InteractionResult.FAIL;
+            try {ServerContext.get(player.getServer());} catch (Exception e) {return InteractionResult.FAIL;}
             ServerComputer comp = getServerComputer(registry, slotStackReal);
             if (comp == null) {
                 player.displayClientMessage(Component.literal("That item isn't a computer type item!"),true);

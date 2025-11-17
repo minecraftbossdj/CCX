@@ -26,7 +26,6 @@ public class PCIeInventory extends SimpleContainer {
     @Override
     public void setChanged() {
         super.setChanged();
-        parent.setChanged();
         if (parent.getLevel() != null && !parent.getLevel().isClientSide()) {
             parent.getLevel().sendBlockUpdated(
                     parent.getBlockPos(),
@@ -34,6 +33,9 @@ public class PCIeInventory extends SimpleContainer {
                     parent.getBlockState(),
                     3
             );
+        }
+        if (!parent.suppressUpdates) {
+            parent.onChange();
         }
     }
 

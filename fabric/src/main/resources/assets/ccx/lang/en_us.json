@@ -8,5 +8,7 @@
   "item.ccx.fake_card": "Fake Card",
   "block.ccx.pc_reader": "PC Reader",
   "item.ccx.server_remote": "Remote Server",
-  "item.ccx.remote_terminal": "Remote Terminal"
+  "item.ccx.remote_terminal": "Remote Terminal",
+  "item.ccx.remote_terminal_advanced": "Advanced Remote Terminal",
+  "item.tooltip.terminal_blockpos": "Linked rack"
 }

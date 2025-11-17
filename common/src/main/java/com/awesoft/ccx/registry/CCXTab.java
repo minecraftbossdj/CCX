@@ -21,6 +21,7 @@ public class CCXTab {
                         output.accept(CCXItems.SERVER_ADVANCED.get());
                         output.accept(CCXItems.SERVER_REMOTE.get());
                         output.accept(CCXItems.REMOTE_TERMINAL.get());
+                        output.accept(CCXItems.REMOTE_TERMINAL_ADVANCED.get());
                         output.accept(CCXBlocks.PCIE_HUB.get());
                         //output.accept(CCXItems.PERIPHERAL_CARD.get());
                         output.accept(CCXItems.INVENTORY_CARD.get());

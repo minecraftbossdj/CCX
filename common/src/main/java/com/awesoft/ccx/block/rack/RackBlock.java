@@ -131,9 +131,7 @@ public class RackBlock extends BaseEntityBlock {
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8f, 1.0f);
             return InteractionResult.SUCCESS;
         } else if (!slotStack.isEmpty() && held.is(CCXItems.REMOTE_TERMINAL.get())) {
-            CCX.LOGGER.info("kill");
             if (slotStack.is(CCXItems.SERVER_REMOTE.get())) {
-                CCX.LOGGER.info("hi!");
                 CompoundTag tag = held.getOrCreateTag();
                 CompoundTag rackPos = new CompoundTag();
                 rackPos.putInt("x", rack.getBlockPos().getX());
@@ -143,6 +141,28 @@ public class RackBlock extends BaseEntityBlock {
                 tag.put("rackPos", rackPos);
                 tag.putInt("slot", slot);
                 player.displayClientMessage(Component.literal("Bound to Remote Server!"), true);
+                return InteractionResult.SUCCESS;
+            }
+        } else if (!slotStack.isEmpty() && held.is(CCXItems.REMOTE_TERMINAL_ADVANCED.get())) {
+            if (slotStack.is(CCXItems.SERVER_REMOTE.get())) {
+                CompoundTag tag = held.getOrCreateTag();
+                if (tag.get("rackNum") == null) tag.putInt("rackNum", 1);
+
+                int rackNum = tag.getInt("rackNum");
+
+                CompoundTag rackTag = new CompoundTag();
+
+                CompoundTag rackPos = new CompoundTag();
+                rackPos.putInt("x", rack.getBlockPos().getX());
+                rackPos.putInt("y", rack.getBlockPos().getY());
+                rackPos.putInt("z", rack.getBlockPos().getZ());
+
+                rackTag.put("rackPos", rackPos);
+                rackTag.putInt("slot", slot);
+
+                tag.put("rack_" + rackNum, rackTag);
+
+                player.displayClientMessage(Component.literal("Bound to Remote Server: " + rackNum), true);
                 return InteractionResult.SUCCESS;
             }
         }

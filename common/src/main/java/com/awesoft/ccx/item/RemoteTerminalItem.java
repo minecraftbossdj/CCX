@@ -63,6 +63,7 @@ public class RemoteTerminalItem extends Item {
 
     @javax.annotation.Nullable
     public static ServerComputer getServerComputer(MinecraftServer server, ItemStack stack) {
+        try {ServerContext.get(server);} catch (Exception e) {return null;}
         if (server != null) {
             return getServerComputer(ServerContext.get(server).registry(), stack);
         } else {
@@ -70,7 +71,7 @@ public class RemoteTerminalItem extends Item {
         }
     }
 
-    private static void openImpl(Player player, ItemStack stack, boolean isTypingOnly, ServerComputer computer) {
+    static void openImpl(Player player, ItemStack stack, boolean isTypingOnly, ServerComputer computer) {
         PlatformHelper.get().openMenu(player, stack.getHoverName(), (id, inventory, entity) -> new ComputerMenuWithoutInventory((MenuType) ModRegistry.Menus.COMPUTER.get(), id, inventory, (p) -> true, computer), new ComputerContainerData(computer, stack));
     }
 
@@ -96,7 +97,9 @@ public class RemoteTerminalItem extends Item {
 
             if (result.getType() == HitResult.Type.BLOCK || held.getTag() == null || held.getTag().get("rackPos") == null) return InteractionResultHolder.fail(held);
             held.getTag().remove("rackPos");
+            held.getTag().remove("slot");
             player.displayClientMessage(Component.literal("Unlinked rack!"),true);
+            return InteractionResultHolder.success(held);
         }
 
         CompoundTag posTag = tag.getCompound("rackPos");
@@ -110,6 +113,8 @@ public class RemoteTerminalItem extends Item {
                 return InteractionResultHolder.fail(held);
             }
             ServerComputer comp = getServerComputer((MinecraftServer) level.getServer(),serverItem);
+            String label = comp.getLabel();
+            if (label != null) held.setHoverName(Component.literal(label));
             openImpl(player,serverItem,false,comp);
             return InteractionResultHolder.success(held);
         }
@@ -120,8 +125,8 @@ public class RemoteTerminalItem extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         if (itemStack.getTag() == null || itemStack.getTag().get("rackPos") == null) return;
         CompoundTag pos = itemStack.getTag().getCompound("rackPos");
-        String posString = pos.getInt("x")+" "+pos.getInt("y")+" "+pos.getInt("z");
-        list.add(Component.literal("Bound rack: ").append(posString));
+        String posString = ": "+pos.getInt("x")+", "+pos.getInt("y")+", "+pos.getInt("z");
+        list.add(Component.translatable("item.tooltip.terminal_blockpos").append(posString));
     }
 
 }

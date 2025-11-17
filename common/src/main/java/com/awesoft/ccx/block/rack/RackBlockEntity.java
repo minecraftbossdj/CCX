@@ -38,13 +38,17 @@ public class RackBlockEntity extends BlockEntity implements Container {
 
     public Map<ComputerSide, IPeripheral> periphs;
 
+    private boolean initialized = false;
+    boolean suppressUpdates = false;
+
     public void onChange() {
         setChanged();
-        if (level != null && !level.isClientSide) {
-            updateComputers();
-            turnOnComputers();
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
+        if (level == null || level.isClientSide) return;
+        if (suppressUpdates) return;
+
+        updateComputers();
+        turnOnComputers();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
     }
 
     private final RackInventory inventory = new RackInventory(this,4);
@@ -67,6 +71,7 @@ public class RackBlockEntity extends BlockEntity implements Container {
                 brain.computer().turnOn();
             }
         }
+
     }
 
     public void disconnectAllServers() {
@@ -110,6 +115,7 @@ public class RackBlockEntity extends BlockEntity implements Container {
     private void updateComputers() {
         if (level == null || level.isClientSide) return;
         if (!(level instanceof ServerLevel serverLevel)) return;
+        if (level.getServer() == null) return;
 
         Direction facing = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 
@@ -137,16 +143,18 @@ public class RackBlockEntity extends BlockEntity implements Container {
         }
     }
 
-    private boolean initialized = false;
+
 
     @Override
     public void setLevel(Level level) {
         super.setLevel(level);
         this.level = level;
-        if (level != null && !level.isClientSide && !initialized) {
+        if (level == null || level.isClientSide) return;
+
+        if (!initialized && level instanceof ServerLevel serverLevel) {
+            var server = serverLevel.getServer();
+            if (server == null) return;
             initialized = true;
-            updateComputers();
-            turnOnComputers();
         }
     }
 
@@ -186,6 +194,7 @@ public class RackBlockEntity extends BlockEntity implements Container {
     }*/
 
 
+    private boolean firstTickHasPast = false;
 
     public static void tick(Level level, BlockPos pos, BlockState state, RackBlockEntity blockEntity) {
         if (level.isClientSide) return;
@@ -198,6 +207,11 @@ public class RackBlockEntity extends BlockEntity implements Container {
                 ServerBrain brain = item.getOrCreateBrain((ServerLevel) level, new ServerHolder.RackHolder(blockEntity, i), stack);
                 brain.computer().keepAlive();
             }
+        }
+        if (!blockEntity.firstTickHasPast) {
+            blockEntity.firstTickHasPast = true;
+            blockEntity.updateComputers();
+            blockEntity.turnOnComputers();
         }
     }
 
@@ -249,8 +263,13 @@ public class RackBlockEntity extends BlockEntity implements Container {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("Inventory")) {
-            inventory.load(tag.getCompound("Inventory"));
+        suppressUpdates = true;
+        try {
+            if (tag.contains("Inventory")) {
+                inventory.load(tag.getCompound("Inventory"));
+            }
+        } finally {
+            suppressUpdates = false;
         }
     }
 

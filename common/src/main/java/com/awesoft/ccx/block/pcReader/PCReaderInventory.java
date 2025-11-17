@@ -21,7 +21,6 @@ public class PCReaderInventory extends SimpleContainer {
     @Override
     public void setChanged() {
         super.setChanged();
-        parent.setChanged();
         if (parent.getLevel() != null && !parent.getLevel().isClientSide()) {
             parent.getLevel().sendBlockUpdated(
                     parent.getBlockPos(),
@@ -29,6 +28,9 @@ public class PCReaderInventory extends SimpleContainer {
                     parent.getBlockState(),
                     3
             );
+        }
+        if (!parent.suppressUpdates) {
+            parent.onChange();
         }
     }
 

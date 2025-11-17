@@ -40,13 +40,17 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
 
     public Map<ComputerSide, IPeripheral> periphs;
 
+    private boolean initialized = false;
+    boolean suppressUpdates = false;
+
     public void onChange() {
         setChanged();
-        if (level != null && !level.isClientSide) {
-            updateComputers();
-            turnOnComputers();
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
+        if (level == null || level.isClientSide) return;
+        if (suppressUpdates) return;
+        updateComputers();
+        turnOnComputers();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
     }
 
     private final PCReaderInventory inventory = new PCReaderInventory(this,4);
@@ -82,7 +86,7 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
     @javax.annotation.Nullable
     public static ServerComputer getServerComputer(MinecraftServer server, ItemStack stack) {
         if (server != null) {
-            if (ServerContext.get(server) == null) return null;
+            try {ServerContext.get(server);} catch (Exception e) {return null;}
             return getServerComputer(ServerContext.get(server).registry(), stack);
         } else {
             return null;
@@ -168,16 +172,15 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
 
     }
 
-    private boolean initialized = false;
-
     @Override
     public void setLevel(Level level) {
         super.setLevel(level);
         this.level = level;
-        if (level != null && !level.isClientSide && !initialized) {
+        if (level == null || level.isClientSide) return;
+
+        if (!initialized && level instanceof ServerLevel serverLevel) {
+            if (serverLevel.getServer() == null) return;
             initialized = true;
-            updateComputers();
-            turnOnComputers();
         }
     }
 
@@ -216,7 +219,7 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
 
     }*/
 
-
+    private boolean firstTickHasPast = false;
 
     public static void tick(Level level, BlockPos pos, BlockState state, PCReaderBlockEntity blockEntity) {
         if (level.isClientSide) return;
@@ -233,6 +236,12 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
                     comp.keepAlive();
                 }
             } catch (RuntimeException ignored) {}
+        }
+
+        if (!blockEntity.firstTickHasPast) {
+            blockEntity.firstTickHasPast = true;
+            blockEntity.updateComputers();
+            blockEntity.turnOnComputers();
         }
     }
 
@@ -284,8 +293,13 @@ public class PCReaderBlockEntity extends BlockEntity implements Container {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("Inventory")) {
-            inventory.load(tag.getCompound("Inventory"));
+        suppressUpdates = true;
+        try {
+            if (tag.contains("Inventory")) {
+                inventory.load(tag.getCompound("Inventory"));
+            }
+        } finally {
+            suppressUpdates = false;
         }
     }
 
