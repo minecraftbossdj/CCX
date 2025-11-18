@@ -99,7 +99,7 @@ public class AdvancedRemoteTerminalItem extends RemoteTerminalItem {
                 if (label != null) {
                     rackTag.putString("label",label);
                     held.setHoverName(Component.literal(label));
-                } else held.resetHoverName();
+                }
 
                 openImpl(player,serverItem,false,comp);
                 return InteractionResultHolder.success(held);

@@ -1,5 +1,6 @@
 package com.awesoft.ccx_drones.entity.drone;
 
+import com.awesoft.ccx.CCX;
 import com.awesoft.ccx_drones.menu.DroneMenu;
 import com.awesoft.ccx_drones.registry.CCXDComponents;
 import com.awesoft.ccx_drones.registry.CCXDItems;
@@ -56,6 +57,8 @@ public class DroneEntity extends Mob {
 
     //TODO: organize this shit AGAIN :sob:
     //TODO: do more testing with this
+    //TODO: make drone be controlled by pocket computer? maybe?
+    //TODO: add disk drive into bro
 
     public static final EntityDataAccessor<CompoundTag> EXTRA = SynchedEntityData.defineId(DroneEntity.class, EntityDataSerializers.COMPOUND_TAG);
     public static final EntityDataAccessor<CompoundTag> CLIENT_INVENTORY = SynchedEntityData.defineId(DroneEntity.class, EntityDataSerializers.COMPOUND_TAG);
@@ -213,24 +216,35 @@ public class DroneEntity extends Mob {
     }
 
     public void setCarrying(BlockPos pos) {
+        if (level().isClientSide) return;
         CompoundTag tag = entityData.get(EXTRA);
 
         System.out.println("picking up!");
         BlockState state = level().getBlockState(pos);
         BlockEntity entity = level().getBlockEntity(pos);
 
-        CompoundTag stateTag = NbtUtils.writeBlockState(state);
-        tag.put("carryingState",stateTag);
+        CCX.LOGGER.info(entity);
+        CCX.LOGGER.info(level().getBlockEntity(new BlockPos(7, -52, 20)));
 
-        if(entity!=null)
-        {
+
+        CompoundTag stateTag = NbtUtils.writeBlockState(state);
+        tag.put("carryingState", stateTag);
+
+        if (entity != null) {
             CompoundTag entityTag = entity.saveWithFullMetadata();
+
+            entityTag.remove("x");
+            entityTag.remove("y");
+            entityTag.remove("z");
+
             tag.put("carryingEntity",entityTag);
+            entityData.set(EXTRA, tag,true);
+            tag = null;
             Clearable.tryClear(entity);
         }
 
 
-        entityData.set(EXTRA,tag,true);
+        if (tag != null) entityData.set(EXTRA, tag,true);
         level().setBlock(pos, Blocks.AIR.defaultBlockState(),2);
     }
 
@@ -242,14 +256,17 @@ public class DroneEntity extends Mob {
             System.out.println("dropping!");
             BlockState state = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(),tag.getCompound("carryingState"));
             level().setBlock(pos,state,2);
-            if(tag.contains("carryingEntity"))
-            {
+
+            if(tag.contains("carryingEntity")) {
                 BlockEntity entity = BlockEntity.loadStatic(pos,state,tag.getCompound("carryingEntity"));
+                entity.setLevel(level());
+                entity.setBlockState(state);
                 level().setBlockEntity(entity);
+
                 tag.remove("carryingEntity");
             }
             tag.remove("carryingState");
-            entityData.set(EXTRA,tag,true);
+            entityData.set(EXTRA, tag,true);
         }
     }
 

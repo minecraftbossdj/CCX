@@ -16,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -204,8 +205,20 @@ public class RackBlockEntity extends BlockEntity implements Container {
             if (stack.isEmpty()) continue;
 
             if (stack.getItem() instanceof ServerPocketItem item) {
+                String label = "";
+                Component labelComp = Component.empty();
+                /*
+                if (!blockEntity.firstTickHasPast) {
+                    label = item.getLabel(stack);
+                    labelComp = stack.getHoverName();
+                }*/
                 ServerBrain brain = item.getOrCreateBrain((ServerLevel) level, new ServerHolder.RackHolder(blockEntity, i), stack);
-                brain.computer().keepAlive();
+                /*if (!blockEntity.firstTickHasPast) {
+                    if (label != null) brain.computer().setLabel(label);
+                    if (labelComp != null && !labelComp.getString().isEmpty() && !labelComp.equals(Component.translatable("item.ccx.server_advanced")) ) stack.setHoverName(labelComp);
+                }*/
+                //brain.computer().keepAlive();
+                item.tick(stack, new ServerHolder.RackHolder(blockEntity, i), false);
             }
         }
         if (!blockEntity.firstTickHasPast) {
