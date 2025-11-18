@@ -50,7 +50,11 @@ public class PCReaderRenderer implements BlockEntityRenderer<PCReaderBlockEntity
             Quaternionf rot = new Quaternionf().rotationXYZ(0f, (float)Math.toRadians(degrees), 0f);
             poseStack.mulPose(rot);
 
-            poseStack.translate(0, -2, -0.44);
+            if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+                poseStack.translate(0, -2, 0.44);
+            } else {
+                poseStack.translate(0, -2, -0.44);
+            }
 
             //poseStack.translate(1.125, 0.75, 1.35);
 
