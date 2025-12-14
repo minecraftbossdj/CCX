@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CWG",
+    " W ",
+    " M "
+  ],
+  "key": {
+    "W": {
+      "item": "computercraft:cable"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "M": {
+      "item": "computercraft:wired_modem"
+    }
+  },
+  "result": {
+    "item": "ccx:usb_port",
+    "count": 1
+  }
+}

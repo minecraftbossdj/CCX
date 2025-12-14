@@ -1,6 +1,7 @@
 package com.awesoft.forge.peripheral;
 
 import com.awesoft.ccx.block.pcie.PCIeBlockEntity;
+import com.awesoft.ccx.block.usb.USBBlockEntity;
 import dan200.computercraft.api.ForgeComputerCraftAPI;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
@@ -18,6 +19,9 @@ public class PeripheralRegistryForge {
                 if (be == null) return LazyOptional.empty();
                 if (be instanceof PCIeBlockEntity pcie) {
                     return LazyOptional.of(pcie::createPeripheral);
+                }
+                if (be instanceof USBBlockEntity usb) {
+                    return LazyOptional.of(usb::createPeripheral);
                 }
                 return LazyOptional.empty();
             }

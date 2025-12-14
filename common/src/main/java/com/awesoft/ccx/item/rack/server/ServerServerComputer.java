@@ -1,5 +1,8 @@
 package com.awesoft.ccx.item.rack.server;
 
+import dan200.computercraft.api.component.AdminComputer;
+import dan200.computercraft.api.component.ComputerComponents;
+import dan200.computercraft.shared.computer.core.ComputerFamily;
 import dan200.computercraft.shared.computer.core.ComputerState;
 import dan200.computercraft.shared.computer.core.ServerComputer;
 import dan200.computercraft.shared.config.ConfigSpec;
@@ -20,6 +23,14 @@ public final class ServerServerComputer extends ServerComputer {
     ServerServerComputer(ServerBrain brain, ServerHolder holder, Properties properties) {
         super(holder.level(), holder.blockPos(), properties.terminalSize((Integer)ConfigSpec.computerTermWidth.get(), (Integer)ConfigSpec.computerTermHeight.get()));
         this.brain = brain;
+        if (brain.computer() != null && brain.computer().getFamily() == ComputerFamily.COMMAND) {
+            properties.addComponent(ComputerComponents.ADMIN_COMPUTER, new AdminComputer() {
+                @Override
+                public int permissionLevel() {
+                    return 4;
+                }
+            });
+        }
     }
 
     public ServerBrain getBrain() {

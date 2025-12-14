@@ -1,9 +1,0 @@
-{
-  "variants": {
-
-    "facing=east": {"model": "ccx:block/pc_reader", "y": 90},
-    "facing=north": {"model": "ccx:block/pc_reader", "y": 0},
-    "facing=south": {"model": "ccx:block/pc_reader", "y": 180},
-    "facing=west": {"model": "ccx:block/pc_reader", "y": 270}
-  }
-}

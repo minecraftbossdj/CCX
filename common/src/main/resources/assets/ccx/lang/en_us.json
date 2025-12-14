@@ -1,0 +1,18 @@
+{
+  "itemGroup.ccx.main": "CCX: Main",
+  "block.ccx.rack": "Rack",
+  "item.ccx.server_advanced": "Server Board",
+  "item.ccx.server_command": "Command Server Board",
+  "block.ccx.pcie_hub": "PCIe Hub",
+  "item.ccx.peripheral_card": "Peripheral Card (NOT IMPLEMENTED)",
+  "item.ccx.inventory_card": "Inventory Card",
+  "item.ccx.fake_card": "Fake Card",
+  "block.ccx.pc_reader": "PC Reader",
+  "item.ccx.server_remote": "Remote Server",
+  "item.ccx.remote_terminal": "Remote Terminal",
+  "item.ccx.remote_terminal_advanced": "Advanced Remote Terminal",
+  "item.tooltip.terminal_blockpos": "Linked rack",
+  "block.ccx.usb_port": "USB Port",
+  "item.ccx.fake_usb": "Fake USB",
+  "item.ccx.wireless_usb": "WiFi USB"
+}

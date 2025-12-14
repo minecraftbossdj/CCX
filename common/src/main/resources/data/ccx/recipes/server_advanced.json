@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IMI",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "computercraft:pocket_computer_advanced"
+    },
+    "M": {
+      "item": "computercraft:wired_modem_full"
+    }
+  },
+  "result": {
+    "item": "ccx:server_advanced",
+    "count": 1
+  }
+}

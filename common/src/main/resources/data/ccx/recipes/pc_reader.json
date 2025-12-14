@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    " C ",
+    " M "
+  ],
+  "key": {
+    "D": {
+      "item": "computercraft:disk_drive"
+    },
+    "C": {
+      "item": "computercraft:computer_advanced"
+    },
+    "M": {
+      "item": "computercraft:monitor_advanced"
+    }
+  },
+  "result": {
+    "item": "ccx:pc_reader",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GDG",
+    "GTG",
+    "GDG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "T": {
+      "item": "ccx:remote_terminal"
+    },
+    "D": {
+      "item": "computercraft:disk"
+    }
+  },
+  "result": {
+    "item": "ccx:remote_terminal_advanced",
+    "count": 1
+  }
+}

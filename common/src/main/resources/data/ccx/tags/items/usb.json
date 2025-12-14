@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "ccx:fake_usb",
+    "ccx:wireless_usb"
+  ]
+}

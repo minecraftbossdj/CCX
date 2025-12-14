@@ -224,7 +224,7 @@ public class DroneAPI implements ILuaAPI {
     }
 
     @LuaFunction(mainThread = true)
-    public MethodResult listUpgrades() {
+    public final MethodResult listUpgrades() {
         ArrayList<String> result = new ArrayList<>();
         var size = drone.getInventory().getContainerSize();
         for (var i = 0; i < size; i++) {
@@ -238,7 +238,7 @@ public class DroneAPI implements ILuaAPI {
     }
 
     @LuaFunction(mainThread = true)
-    public MethodResult hasUpgrade(String upgradeid) {
+    public final MethodResult hasUpgrade(String upgradeid) {
         return MethodResult.of(drone.hasUpgrade(upgradeid));
     }
 }

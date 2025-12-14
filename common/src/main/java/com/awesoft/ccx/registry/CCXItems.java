@@ -20,6 +20,9 @@ public class CCXItems {
     public static final RegistrySupplier<ServerPocketItem> SERVER_ADVANCED = ITEMS.register("server_advanced",
             () -> new ServerPocketItem(new Item.Properties().stacksTo(1), ComputerFamily.ADVANCED));
 
+    public static final RegistrySupplier<ServerPocketItem> SERVER_COMMAND = ITEMS.register("server_command",
+            () -> new ServerPocketItem(new Item.Properties().stacksTo(1), ComputerFamily.COMMAND));
+
     public static final RegistrySupplier<Item> SERVER_REMOTE = ITEMS.register("server_remote",
             () -> new Item(new Item.Properties().stacksTo(1))
     );
@@ -42,6 +45,14 @@ public class CCXItems {
 
     public static final RegistrySupplier<Item> REMOTE_TERMINAL_ADVANCED = ITEMS.register("remote_terminal_advanced",
             () -> new AdvancedRemoteTerminalItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistrySupplier<Item> FAKE_USB = ITEMS.register("fake_usb",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistrySupplier<Item> WIRELESS_USB = ITEMS.register("wireless_usb",
+            () -> new Item(new Item.Properties().stacksTo(1))
     );
 
     public static void register() {

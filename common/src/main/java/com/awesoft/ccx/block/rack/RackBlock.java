@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RackBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final IntegerProperty SERVER_SLOT = IntegerProperty.create("server_slot", 0, 8);
+    public static final IntegerProperty SERVER_SLOT = IntegerProperty.create("server_slot", 0, 12);
 
     public RackBlock(Properties pProperties) {
         super(pProperties);
@@ -125,7 +125,7 @@ public class RackBlock extends BaseEntityBlock {
             ItemStack insert = held.copy();
             insert.setCount(1);
             rack.getInventory().setItem(slot, insert);
-            if (!player.isCreative()) held.shrink(1);
+            if (!player.isCreative() || held.is(CCXItems.SERVER_COMMAND.get())) held.shrink(1);
             rack.setChanged();
             level.sendBlockUpdated(pos, state, state, 3);
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8f, 1.0f);

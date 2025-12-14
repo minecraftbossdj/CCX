@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "ISI",
+    " M "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:spyglass"
+    },
+    "M": {
+      "item": "computercraft:wired_modem_full"
+    }
+  },
+  "result": {
+    "item": "ccx_drones:survey_upgrade",
+    "count": 1
+  }
+}

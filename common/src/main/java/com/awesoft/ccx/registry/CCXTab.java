@@ -13,12 +13,13 @@ public class CCXTab {
 
 
     public static final RegistrySupplier<CreativeModeTab> CCX_MAIN = CREATIVE_MODE_TABS.register("ccx.main",
-            () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP,6)
+            () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP,4)
                     .title(Component.translatable("itemGroup.ccx.main"))
                     .icon(() -> new ItemStack(CCXBlocks.RACK.get()))
                     .displayItems((displayParms,output) ->{
                         output.accept(CCXBlocks.RACK.get());
                         output.accept(CCXItems.SERVER_ADVANCED.get());
+                        output.accept(CCXItems.SERVER_COMMAND.get());
                         output.accept(CCXItems.SERVER_REMOTE.get());
                         output.accept(CCXItems.REMOTE_TERMINAL.get());
                         output.accept(CCXItems.REMOTE_TERMINAL_ADVANCED.get());
@@ -27,6 +28,9 @@ public class CCXTab {
                         output.accept(CCXItems.INVENTORY_CARD.get());
                         output.accept(CCXItems.FAKE_CARD.get());
                         output.accept(CCXBlocks.PC_READER.get());
+                        output.accept(CCXBlocks.USB_PORT.get());
+                        output.accept(CCXItems.FAKE_USB.get());
+                        output.accept(CCXItems.WIRELESS_USB.get());
                     })
                     .build()
     );

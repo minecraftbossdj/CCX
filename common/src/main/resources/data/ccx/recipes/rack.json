@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "ICI",
+    "IMI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "computercraft:computer_normal"
+    },
+    "M": {
+      "item": "computercraft:wired_modem_full"
+    }
+  },
+  "result": {
+    "item": "ccx:rack",
+    "count": 1
+  }
+}

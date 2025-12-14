@@ -3,6 +3,7 @@ package com.awesoft.ccx_drones.registry;
 import com.awesoft.ccx.CCX;
 import com.awesoft.ccx.registry.CCXBlocks;
 import com.awesoft.ccx.registry.CCXItems;
+import com.awesoft.ccx_drones.CCXDrones;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -11,11 +12,11 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class CCXDTab {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(CCX.MOD_ID, Registries.CREATIVE_MODE_TAB);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(CCXDrones.MOD_ID, Registries.CREATIVE_MODE_TAB);
 
 
     public static final RegistrySupplier<CreativeModeTab> CCX_DRONES_MAIN = CREATIVE_MODE_TABS.register("ccx_drones.main",
-            () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP,6)
+            () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP,5)
                     .title(Component.translatable("itemGroup.ccx_drones.main"))
                     .icon(() -> new ItemStack(CCXDItems.DRONE_ITEM.get()))
                     .displayItems((displayParms,output) ->{

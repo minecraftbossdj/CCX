@@ -32,6 +32,10 @@ public class InventoryCardFunctions {
     private int cardSlot;
     private Container inv;
 
+    private boolean checkItem() {
+        return pcieBlock.getInventory().getItem(0).getItem().equals(CCXItems.INVENTORY_CARD.get());
+    }
+
     public InventoryCardFunctions(PCIeBlockEntity pcieBlock, int slot, Container inv) {
         this.pcieBlock = pcieBlock;
         this.cardSlot = slot;
@@ -39,8 +43,9 @@ public class InventoryCardFunctions {
     }
 
 
-
     public ILuaFunction size = args -> {
+        if (!checkItem()) return MethodResult.of(false, "Card not inserted!");
+
         if (inv == null) {
             return MethodResult.of(false, "Block is NOT a inventory!");
         }
@@ -48,6 +53,8 @@ public class InventoryCardFunctions {
     };
 
     public ILuaFunction list = args -> {
+        if (!checkItem()) return MethodResult.of(false, "Card not inserted!");
+
         if (inv == null) {
             return MethodResult.of(false, "Block is NOT a inventory!");
         }
@@ -60,6 +67,8 @@ public class InventoryCardFunctions {
 
 
     public ILuaFunction getItemDetail = args -> {
+        if (!checkItem()) return MethodResult.of(false, "Card not inserted!");
+
         if (inv == null) {
             return MethodResult.of(false, "Block is NOT a inventory!");
         }
@@ -68,6 +77,8 @@ public class InventoryCardFunctions {
     };
 
     public ILuaFunction getItemLimit = args -> {
+        if (!checkItem()) return MethodResult.of(false, "Card not inserted!");
+
         if (inv == null) {
             return MethodResult.of(false, "Block is NOT a inventory!");
         }

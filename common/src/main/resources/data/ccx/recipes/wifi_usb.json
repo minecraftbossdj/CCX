@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GWC",
+    " U ",
+    "EME"
+  ],
+  "key": {
+    "W": {
+      "item": "computercraft:cable"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "M": {
+      "item": "computercraft:wireless_modem_advanced"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "U": {
+      "item": "ccx:fake_usb"
+    }
+  },
+  "result": {
+    "item": "ccx:wireless_usb",
+    "count": 1
+  }
+}

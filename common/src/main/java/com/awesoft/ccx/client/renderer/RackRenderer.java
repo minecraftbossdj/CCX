@@ -37,8 +37,12 @@ public class RackRenderer implements BlockEntityRenderer<RackBlockEntity> {
                     serverState = CCXBlocks.RACK.get()
                             .defaultBlockState()
                             .setValue(RackBlock.SERVER_SLOT, i + 5);
-                } else {
+                } else if (stack.is(CCXItems.SERVER_COMMAND.get())) {
                      serverState = CCXBlocks.RACK.get()
+                            .defaultBlockState()
+                            .setValue(RackBlock.SERVER_SLOT, i + 9);
+                } else {
+                    serverState = CCXBlocks.RACK.get()
                             .defaultBlockState()
                             .setValue(RackBlock.SERVER_SLOT, i + 1);
                 }

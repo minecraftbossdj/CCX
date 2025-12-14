@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EPE",
+    "GCG",
+    " W "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "C": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "P": {
+      "item": "computercraft:pocket_computer_advanced"
+    },
+    "W": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "ccx_pocket:pocket_pack_advanced",
+    "count": 1
+  }
+}

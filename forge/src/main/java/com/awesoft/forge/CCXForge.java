@@ -2,6 +2,7 @@ package com.awesoft.forge;
 
 import com.awesoft.ccx.lib.periph.PeripheralAccessProvider;
 import com.awesoft.ccx_drones.CCXDrones;
+import com.awesoft.ccx_pocket.CCXPocket;
 import com.awesoft.forge.peripheral.CCXPeripheralAccessForge;
 import com.awesoft.forge.peripheral.PeripheralRegistryForge;
 import dev.architectury.platform.forge.EventBuses;
@@ -16,6 +17,7 @@ public final class CCXForge {
         // Submit our event bus to let Architectury API register our content on the right time.
         EventBuses.registerModEventBus(CCX.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         EventBuses.registerModEventBus(CCXDrones.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        EventBuses.registerModEventBus(CCXPocket.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
 
         PeripheralAccessProvider.register(new CCXPeripheralAccessForge());
 

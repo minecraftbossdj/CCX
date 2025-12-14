@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GWC",
+    " M ",
+    " I "
+  ],
+  "key": {
+    "W": {
+      "item": "computercraft:cable"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "M": {
+      "item": "computercraft:wired_modem_full"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "ccx:fake_usb",
+    "count": 1
+  }
+}

@@ -4,6 +4,7 @@ import com.awesoft.ccx.CCX;
 import com.awesoft.ccx.block.pcReader.PCReaderBlockEntity;
 import com.awesoft.ccx.block.pcie.PCIeBlockEntity;
 import com.awesoft.ccx.block.rack.RackBlockEntity;
+import com.awesoft.ccx.block.usb.USBBlockEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -24,6 +25,10 @@ public class CCXBlockEntities {
     public static final RegistrySupplier<BlockEntityType<PCReaderBlockEntity>> PC_READER_ENTITY =
             BLOCK_ENTITIES.register("pc_reader", () ->
                     BlockEntityType.Builder.of(PCReaderBlockEntity::new, CCXBlocks.PC_READER.get()).build(null));
+
+    public static final RegistrySupplier<BlockEntityType<USBBlockEntity>> USB_PORT_ENTITY =
+            BLOCK_ENTITIES.register("usb_port", () ->
+                    BlockEntityType.Builder.of(USBBlockEntity::new, CCXBlocks.USB_PORT.get()).build(null));
 
     public static void register() {
         BLOCK_ENTITIES.register();

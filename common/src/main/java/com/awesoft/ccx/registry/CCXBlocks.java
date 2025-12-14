@@ -4,6 +4,7 @@ import com.awesoft.ccx.CCX;
 import com.awesoft.ccx.block.pcReader.PCReaderBlock;
 import com.awesoft.ccx.block.pcie.PCIeBlock;
 import com.awesoft.ccx.block.rack.RackBlock;
+import com.awesoft.ccx.block.usb.USBBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -38,6 +39,9 @@ public class CCXBlocks {
 
     public static final RegistrySupplier<Block> PC_READER =
             register("pc_reader", () -> new PCReaderBlock(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)));
+
+    public static final RegistrySupplier<Block> USB_PORT =
+            register("usb_port", () -> new USBBlock(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK)));
 
     public static void register() {
         BLOCKS.register();

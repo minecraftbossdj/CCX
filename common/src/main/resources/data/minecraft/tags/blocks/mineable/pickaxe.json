@@ -2,6 +2,7 @@
   "values": [
     "ccx:rack",
     "ccx:pcie_hub",
-    "ccx:pc_reader"
+    "ccx:pc_reader",
+    "ccx:usb_port"
   ]
 }

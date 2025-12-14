@@ -1,9 +1,0 @@
-{
-  "variants": {
-
-    "facing=east": {"model": "ccx:block/pcie_hub", "y": 90},
-    "facing=north": {"model": "ccx:block/pcie_hub", "y": 0},
-    "facing=south": {"model": "ccx:block/pcie_hub", "y": 180},
-    "facing=west": {"model": "ccx:block/pcie_hub", "y": 270}
-  }
-}

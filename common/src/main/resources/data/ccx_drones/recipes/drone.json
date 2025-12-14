@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "GTG",
+    "IPI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_bars"
+    },
+    "T": {
+      "item": "computercraft:turtle_advanced"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "P": {
+      "item": "computercraft:pocket_computer_advanced"
+    }
+  },
+  "result": {
+    "item": "ccx_drones:drone",
+    "count": 1
+  }
+}

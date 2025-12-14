@@ -6,6 +6,8 @@ import com.awesoft.ccx.registry.CCXBlockEntities;
 import com.awesoft.ccx_drones.client.CCXDronesClient;
 import com.awesoft.ccx_drones.client.screen.DroneScreen;
 import com.awesoft.ccx_drones.registry.CCXDMenu;
+import com.awesoft.ccx_pocket.CCXPocket;
+import com.awesoft.ccx_pocket.CCXPocketClient;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -21,5 +23,6 @@ public final class CCXFabricClient implements ClientModInitializer {
         );
         CCXClient.init();
         CCXDronesClient.init();
+        CCXPocketClient.init();
     }
 }

@@ -88,6 +88,6 @@ public class RackInventory extends SimpleContainer {
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return stack.is(CCXItems.SERVER_ADVANCED.get()) || stack.is(CCXItems.SERVER_REMOTE.get());
+        return stack.is(CCXItems.SERVER_ADVANCED.get()) || stack.is(CCXItems.SERVER_COMMAND.get()) || stack.is(CCXItems.SERVER_REMOTE.get());
     }
 }

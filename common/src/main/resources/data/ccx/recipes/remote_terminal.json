@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IMI",
+    "IWI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "W": {
+      "item": "computercraft:wireless_modem_advanced"
+    },
+    "M": {
+      "item": "computercraft:monitor_advanced"
+    }
+  },
+  "result": {
+    "item": "ccx:remote_terminal",
+    "count": 1
+  }
+}

@@ -89,7 +89,7 @@ public class AdvancedRemoteTerminalItem extends RemoteTerminalItem {
                 int serverSlot = rackTag.getInt("slot") - 1;
                 if (serverSlot < 0) serverSlot = 3;
                 ItemStack serverItem = rackEnt.getInventory().getItem(serverSlot);
-                if (!serverItem.is(CCXItems.SERVER_ADVANCED.get())) {
+                if (!serverItem.is(CCXItems.SERVER_ADVANCED.get()) && !serverItem.is(CCXItems.SERVER_COMMAND.get())) {
                     player.displayClientMessage(Component.literal("No server above Remote Server!"), true);
                     return InteractionResultHolder.fail(held);
                 }

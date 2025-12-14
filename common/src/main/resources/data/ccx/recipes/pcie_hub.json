@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IMI",
+    "ICI",
+    "IBI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "ccx:fake_card"
+    },
+    "M": {
+      "item": "computercraft:wired_modem_full"
+    },
+    "B": {
+      "item": "computercraft:cable"
+    }
+  },
+  "result": {
+    "item": "ccx:pcie_hub",
+    "count": 1
+  }
+}

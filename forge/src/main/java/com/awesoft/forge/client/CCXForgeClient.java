@@ -8,6 +8,7 @@ import com.awesoft.ccx_drones.client.render.DroneEntityRenderer;
 import com.awesoft.ccx_drones.client.screen.DroneScreen;
 import com.awesoft.ccx_drones.registry.CCXDEntities;
 import com.awesoft.ccx_drones.registry.CCXDMenu;
+import com.awesoft.ccx_pocket.CCXPocketClient;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -35,6 +36,7 @@ public class CCXForgeClient {
             );
         });
         CCXClient.init();
+        CCXPocketClient.init();
     }
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

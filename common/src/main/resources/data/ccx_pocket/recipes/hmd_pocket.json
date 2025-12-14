@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "MHM",
+    "IPI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "computercraft:monitor_advanced"
+    },
+    "H": {
+      "item": "minecraft:iron_helmet"
+    },
+    "P": {
+      "item": "computercraft:pocket_computer_advanced"
+    }
+  },
+  "result": {
+    "item": "ccx_pocket:hmd_advanced",
+    "count": 1
+  }
+}
