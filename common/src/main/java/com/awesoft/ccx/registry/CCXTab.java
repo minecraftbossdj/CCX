@@ -19,7 +19,7 @@ public class CCXTab {
                     .displayItems((displayParms,output) ->{
                         output.accept(CCXBlocks.RACK.get());
                         output.accept(CCXItems.SERVER_ADVANCED.get());
-                        output.accept(CCXItems.SERVER_COMMAND.get());
+                        //output.accept(CCXItems.SERVER_COMMAND.get());
                         output.accept(CCXItems.SERVER_REMOTE.get());
                         output.accept(CCXItems.REMOTE_TERMINAL.get());
                         output.accept(CCXItems.REMOTE_TERMINAL_ADVANCED.get());
