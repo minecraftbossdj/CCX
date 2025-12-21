@@ -284,6 +284,7 @@ public class RackBlockEntity extends BlockEntity implements Container {
         } finally {
             suppressUpdates = false;
         }
+        updateComputers();
     }
 
     @Override
