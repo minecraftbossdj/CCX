@@ -1,6 +1,6 @@
 plugins {
     id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
-    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'architectury-plugin' version '3.4.162'
     id 'com.gradleup.shadow' version '8.3.6' apply false
 }
 
@@ -30,6 +30,11 @@ subprojects {
                 includeGroup("cc.tweaked")
             }
         }
+        maven {
+            name "Architectury"
+            url "maven.architectury.dev"
+        }
+
     }
 
 

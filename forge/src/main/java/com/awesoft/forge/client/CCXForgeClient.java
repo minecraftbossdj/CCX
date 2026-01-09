@@ -27,6 +27,7 @@ public class CCXForgeClient {
         //event.registerBlockEntityRenderer(CCXBlockEntities.RACK_ENTITY.get(), RackRenderer::new);
         CCXClient.BERendererRegister();
     }
+
     @SubscribeEvent
     public static void startup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
@@ -38,6 +39,7 @@ public class CCXForgeClient {
         CCXClient.init();
         CCXPocketClient.init();
     }
+
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(CCXDEntities.DRONE_ENTITY.get(), (DroneEntityRenderer::new));

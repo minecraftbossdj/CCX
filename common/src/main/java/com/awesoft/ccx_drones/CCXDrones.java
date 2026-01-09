@@ -21,4 +21,5 @@ public class CCXDrones {
         CCXDTab.register();
         LOGGER.info("CCX: Drones successfully loaded!");
     } //im ngl, most this code is ported over from "my" other mod, CC:Drones+
+
 }
