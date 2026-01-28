@@ -26,7 +26,6 @@ public class CommandCardFunctions {
     }
 
 
-
     public ILuaFunction runCommand = args -> {
         if (pcieBlock.getLevel() == null || pcieBlock.getLevel().getServer() == null || pcieBlock.getLevel().isClientSide) return null;
         var source = pcieBlock.getLevel().getServer().createCommandSourceStack();

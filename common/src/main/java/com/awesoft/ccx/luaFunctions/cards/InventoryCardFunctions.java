@@ -19,10 +19,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InventoryCardFunctions {
 
@@ -33,7 +30,7 @@ public class InventoryCardFunctions {
     private Container inv;
 
     private boolean checkItem() {
-        return pcieBlock.getInventory().getItem(0).getItem().equals(CCXItems.INVENTORY_CARD.get());
+        return pcieBlock.getInventory().getItem(cardSlot).is(CCXItems.INVENTORY_CARD.get());
     }
 
     public InventoryCardFunctions(PCIeBlockEntity pcieBlock, int slot, Container inv) {

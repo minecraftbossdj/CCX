@@ -51,11 +51,14 @@ import java.util.UUID;
 
 public class DroneEntity extends Mob {
 
+    //target pos
     private Vec3 targetPos;
+    public void setTargetPos(Vec3 pos) {
+        this.targetPos = pos;
+    }
 
     DroneBrain brain = new DroneBrain(this); //TODO: port more stuff over to DroneBrain so its actually useful and not just for GUI
 
-    //TODO: organize this shit AGAIN :sob:
     //TODO: do more testing with this
     //TODO: make drone be controlled by pocket computer? maybe?
     //TODO: add disk drive into bro
@@ -65,8 +68,9 @@ public class DroneEntity extends Mob {
 
     public DroneEntity(EntityType<DroneEntity> e, Level level) {
         super(e, level);
-
     }
+
+    //inventory stuff
 
     int INVENTORY_SIZE = 7;
 
@@ -80,90 +84,17 @@ public class DroneEntity extends Mob {
         return inventory;
     }
 
-    private boolean loaderActive = false;
-
-    public void setTargetPos(Vec3 pos) {
-        this.targetPos = pos;
-    }
-
-    public float propellerRotation;
-
-    @Override
-    public void tick() {
-        super.tick();
-        if(!this.level().isClientSide) {
-            if (!this.isDeadOrDying()) {
-                ServerComputer computer = createOrUpkeepComputer();
-                computer.keepAlive();
-
-
-                if (targetPos != null) {
-                    Vec3 targetCenter = new Vec3(targetPos.x+0.5,targetPos.y+0.5,targetPos.z+0.5);
-                    Vec3 dir = targetCenter.subtract(position()).normalize();
-                    double speed = 0.1;
-                    setDeltaMovement(getDeltaMovement().scale(0.9).add(dir.scale(speed)));
-                    this.lookAt(EntityAnchorArgument.Anchor.EYES,targetCenter);
-
-                    if (position().closerThan(targetCenter, 0.5)) {
-                        targetPos = null;
-                        setDeltaMovement(Vec3.ZERO);
-
-                        Object[] eventarg = new Object[1];
-                        eventarg[0] = "drone_movement";
-                        computer.queueEvent("task_complete", eventarg);
-                    }
-                }
-
-            }
-        }
-        if (engineOn()) {
-            setDeltaMovement(getForward().multiply(0.1,0.1,0.1));
-        }
-        propellerRotation = (propellerRotation + 25f) % 360f;
-    }
-
-
-    @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return false;
-    }
-
-    @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack held = player.getItemInHand(hand);
-
-        if (!level().isClientSide) {
-            if (held.isEmpty()) {
-                ServerComputer computer = getServerComputer();
-                if (computer == null) {return InteractionResult.FAIL;}
-                PlatformHelper.get().openMenu(
-                        player,
-                        player.getItemInHand(hand).getHoverName(),
-                        (id, inventory, entity) ->
-                                new DroneMenu(
-                                        id,
-                                        (p) -> true,
-                                        ComputerFamily.ADVANCED,
-                                        computer,
-                                        null,
-                                        player.getInventory(),
-                                        this.getInventory(),
-                                        (SingleContainerData) brain::getSelectedSlot
-
-                                ),
-                        new ComputerContainerData(computer, ItemStack.EMPTY)
-                );
-            }
-        }
-
-        return InteractionResult.SUCCESS;
-    }
+    //data stuff
 
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
@@ -208,13 +139,118 @@ public class DroneEntity extends Mob {
         syncInventoryToClient();
     }
 
-    public void setComputerID(int computerID) {
-        CompoundTag tag = entityData.get(EXTRA);
-        tag.putInt("computerID",computerID);
-        entityData.set(EXTRA,tag);
-
+    public void syncInventoryToClient() {
+        CompoundTag tag = new CompoundTag();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty()) {
+                CompoundTag itemTag = new CompoundTag();
+                stack.save(itemTag);
+                tag.put("Slot" + i, itemTag);
+            }
+        }
+        entityData.set(CLIENT_INVENTORY, tag);
     }
 
+    public void setAllData(CompoundTag tag) {
+        entityData.set(EXTRA,tag);
+    }
+    public CompoundTag getAllData() {
+        return entityData.get(EXTRA);
+    }
+
+    //render stuff
+    public ItemStack getSlotForRenderer(int slot) {
+        if (!level().isClientSide) return ItemStack.EMPTY;
+        CompoundTag tag = entityData.get(CLIENT_INVENTORY);
+        if(tag.contains("Slot" + slot)) {
+            return ItemStack.of(tag.getCompound("Slot" + slot));
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public float propellerRotation;
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return -2;
+    }
+
+    //misc stuff?
+    private boolean loaderActive = false;
+
+    @Override
+    public void tick() {
+        super.tick();
+        if(!this.level().isClientSide) {
+            if (!this.isDeadOrDying()) {
+                ServerComputer computer = createOrUpkeepComputer();
+                computer.keepAlive();
+
+
+                if (targetPos != null) {
+                    Vec3 targetCenter = new Vec3(targetPos.x+0.5,targetPos.y+0.5,targetPos.z+0.5);
+                    Vec3 dir = targetCenter.subtract(position()).normalize();
+                    double speed = 0.1;
+                    setDeltaMovement(getDeltaMovement().scale(0.9).add(dir.scale(speed)));
+                    this.lookAt(EntityAnchorArgument.Anchor.EYES,targetCenter);
+
+                    if (position().closerThan(targetCenter, 0.5)) {
+                        targetPos = null;
+                        setDeltaMovement(Vec3.ZERO);
+
+                        Object[] eventarg = new Object[1];
+                        eventarg[0] = "drone_movement";
+                        computer.queueEvent("task_complete", eventarg);
+                    }
+                }
+
+            }
+        }
+        if (engineOn()) {
+            setDeltaMovement(getForward().multiply(0.1,0.1,0.1));
+        }
+        propellerRotation = (propellerRotation + 25f) % 360f;
+    }
+
+
+    //interact mob
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+
+        if (!level().isClientSide) {
+            if (held.isEmpty()) {
+                ServerComputer computer = getServerComputer();
+                if (computer == null) {return InteractionResult.FAIL;}
+                PlatformHelper.get().openMenu(
+                        player,
+                        player.getItemInHand(hand).getHoverName(),
+                        (id, inventory, entity) ->
+                                new DroneMenu(
+                                        id,
+                                        (p) -> true,
+                                        ComputerFamily.ADVANCED,
+                                        computer,
+                                        null,
+                                        player.getInventory(),
+                                        this.getInventory(),
+                                        (SingleContainerData) brain::getSelectedSlot
+
+                                ),
+                        new ComputerContainerData(computer, ItemStack.EMPTY)
+                );
+            }
+        }
+
+        return InteractionResult.SUCCESS;
+    }
+
+    public boolean canPlayerUse(Player player) {
+        return true;
+    }
+
+    //computer stuff pt1: upgrades/functions
     public void setCarrying(BlockPos pos) {
         if (level().isClientSide) return;
         CompoundTag tag = entityData.get(EXTRA);
@@ -270,54 +306,13 @@ public class DroneEntity extends Mob {
         }
     }
 
-    public boolean canPlayerUse(Player player) {
-        return true;
-    }
-
-    public boolean isCarryingBlock()
-    {
-        CompoundTag tag = entityData.get(EXTRA);
-        return tag.contains("carryingState");
-    }
-
-    public void setComputerUUID(UUID computerUUID) {
-        CompoundTag tag = entityData.get(EXTRA);
-        tag.putUUID("computerUUID",computerUUID);
-        entityData.set(EXTRA,tag);
-    }
-
-    public void syncInventoryToClient() {
-        CompoundTag tag = new CompoundTag();
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (!stack.isEmpty()) {
-                CompoundTag itemTag = new CompoundTag();
-                stack.save(itemTag);
-                tag.put("Slot" + i, itemTag);
-            }
-        }
-        entityData.set(CLIENT_INVENTORY, tag);
-    }
-
-    public ItemStack getSlotForRenderer(int slot) {
-        if (!level().isClientSide) return ItemStack.EMPTY;
-        CompoundTag tag = entityData.get(CLIENT_INVENTORY);
-        if(tag.contains("Slot" + slot)) {
-            return ItemStack.of(tag.getCompound("Slot" + slot));
-        }
-        return ItemStack.EMPTY;
-    }
-
-
     public boolean hasUpgrade(String upgrade) {
-
         Item stringItem = BuiltInRegistries.ITEM.get(new ResourceLocation(upgrade));
 
         if (stringItem != null && stringItem != Items.AIR) {
             return inventory.hasAnyOf(Set.of(stringItem));
         }
         return false;
-
     }
 
     public void setEngineOn(boolean on)
@@ -336,8 +331,26 @@ public class DroneEntity extends Mob {
         return false;
     }
 
-    public int getComputerID()
-    {
+    public boolean isCarryingBlock() {
+        CompoundTag tag = entityData.get(EXTRA);
+        return tag.contains("carryingState");
+    }
+
+    //computer stuff pt2
+    public void setComputerID(int computerID) {
+        CompoundTag tag = entityData.get(EXTRA);
+        tag.putInt("computerID",computerID);
+        entityData.set(EXTRA,tag);
+
+    }
+
+    public void setComputerUUID(UUID computerUUID) {
+        CompoundTag tag = entityData.get(EXTRA);
+        tag.putUUID("computerUUID",computerUUID);
+        entityData.set(EXTRA,tag);
+    }
+
+    public int getComputerID() {
         CompoundTag tag = entityData.get(EXTRA);
         if(tag.contains("computerID"))
         {
@@ -345,22 +358,13 @@ public class DroneEntity extends Mob {
         }
         return -1;
     }
-    public UUID getComputerUUID()
-    {
+    public UUID getComputerUUID() {
         CompoundTag tag = entityData.get(EXTRA);
-        if(tag.contains("computerUUID")) {
+        if (tag.contains("computerUUID")) {
             return tag.getUUID("computerUUID");
         }
         return null;
     }
-    public void setAllData(CompoundTag tag) {
-        entityData.set(EXTRA,tag);
-    }
-    public CompoundTag getAllData() {
-        return entityData.get(EXTRA);
-    }
-
-
 
     public ServerComputer createOrUpkeepComputer() {
         ServerContext context = ServerContext.get(this.getServer());
@@ -395,6 +399,7 @@ public class DroneEntity extends Mob {
         return computer;
     }
 
+    //misc mob stuff
     @Override
     protected void dropAllDeathLoot(DamageSource damageSource) {
         super.dropAllDeathLoot(damageSource);
@@ -427,10 +432,5 @@ public class DroneEntity extends Mob {
                 level().addFreshEntity(drop);
             }
         }
-    }
-
-    @Override
-    public double getPassengersRidingOffset() {
-        return -2;
     }
 }

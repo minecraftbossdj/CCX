@@ -1,15 +1,15 @@
 package com.awesoft.ccx_pocket.item.hmd;
 
 
+import com.awesoft.ccx_pocket.item.base.BasePocketArmorItem;
+import com.awesoft.ccx_pocket.item.base.BasePocketItem;
 import dan200.computercraft.api.ComputerCraftAPI;
 import dan200.computercraft.api.filesystem.Mount;
-import dan200.computercraft.api.media.IMedia;
 import dan200.computercraft.api.pocket.IPocketUpgrade;
 import dan200.computercraft.api.upgrades.UpgradeData;
 import dan200.computercraft.core.computer.ComputerSide;
 import dan200.computercraft.impl.PocketUpgrades;
 import dan200.computercraft.shared.ModRegistry.Menus;
-import dan200.computercraft.shared.common.IColouredItem;
 import dan200.computercraft.shared.computer.core.ComputerFamily;
 import dan200.computercraft.shared.computer.core.ServerComputer;
 import dan200.computercraft.shared.computer.core.ServerComputerRegistry;
@@ -19,7 +19,6 @@ import dan200.computercraft.shared.computer.items.IComputerItem;
 import dan200.computercraft.shared.config.Config;
 import dan200.computercraft.shared.network.container.ComputerContainerData;
 import dan200.computercraft.shared.platform.PlatformHelper;
-import dan200.computercraft.shared.pocket.core.PocketHolder;
 import dan200.computercraft.shared.util.InventoryUtil;
 import dan200.computercraft.shared.util.NBTUtil;
 import net.minecraft.ChatFormatting;
@@ -45,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, IColouredItem {
+public class HMDPocketItem extends BasePocketArmorItem {
     private static final String NBT_UPGRADE = "Upgrade";
     private static final String NBT_UPGRADE_INFO = "UpgradeInfo";
     public static final String NBT_ON = "On";
@@ -54,32 +53,8 @@ public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, I
     private final ComputerFamily family;
 
     public HMDPocketItem(Properties settings, ComputerFamily family) {
-        super(ArmorMaterials.IRON, Type.HELMET, settings);
+        super(ArmorMaterials.IRON, Type.HELMET, settings, family);
         this.family = family;
-    }
-
-    public ItemStack create(int id, @Nullable String label, int colour, @Nullable UpgradeData<IPocketUpgrade> upgrade) {
-        ItemStack result = new ItemStack(this);
-        if (id >= 0) {
-            result.getOrCreateTag().putInt("ComputerId", id);
-        }
-
-        if (label != null) {
-            result.setHoverName(Component.literal(label));
-        }
-
-        if (upgrade != null) {
-            result.getOrCreateTag().putString("Upgrade", ((IPocketUpgrade)upgrade.upgrade()).getUpgradeID().toString());
-            if (!upgrade.data().isEmpty()) {
-                result.getOrCreateTag().put("UpgradeInfo", upgrade.data().copy());
-            }
-        }
-
-        if (colour != -1) {
-            result.getOrCreateTag().putInt("Color", colour);
-        }
-
-        return result;
     }
 
     public void tick(ItemStack stack, HMDHolder holder, boolean passive) {
@@ -144,20 +119,6 @@ public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, I
         }
     }
 
-    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        Level level = entity.level();
-        if (!level.isClientSide && level.getServer() != null) {
-            this.tick(stack, new HMDHolder.ItemEntityHolder(entity), true);
-            return false;
-        } else {
-            return false;
-        }
-    }
-
-    public InteractionResult useOn(UseOnContext context) {
-        return InteractionResult.PASS;
-    }
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 
@@ -191,34 +152,6 @@ public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, I
         PlatformHelper.get().openMenu(player, stack.getHoverName(), (id, inventory, entity) -> new ComputerMenuWithoutInventory(isTypingOnly ? (MenuType)Menus.POCKET_COMPUTER_NO_TERM.get() : (MenuType)Menus.COMPUTER.get(), id, inventory, (p) -> holder.isValid(computer), computer), new ComputerContainerData(computer, stack));
     }
 
-    public Component getName(ItemStack stack) {
-        String baseString = this.getDescriptionId(stack);
-        IPocketUpgrade upgrade = getUpgrade(stack);
-        return (Component)(upgrade != null ? Component.translatable(baseString + ".upgraded", new Object[]{Component.translatable(upgrade.getUnlocalisedAdjective())}) : super.getName(stack));
-    }
-
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag flag) {
-        if (flag.isAdvanced() || this.getLabel(stack) == null) {
-            int id = this.getComputerID(stack);
-            if (id >= 0) {
-                list.add(Component.translatable("gui.computercraft.tooltip.computer_id", new Object[]{id}).withStyle(ChatFormatting.GRAY));
-            }
-        }
-
-    }
-
-    @Nullable
-    public String getCreatorModId(ItemStack stack) {
-        IPocketUpgrade upgrade = getUpgrade(stack);
-        if (upgrade != null) {
-            String mod = PocketUpgrades.instance().getOwner(upgrade);
-            if (mod != null && !mod.equals("computercraft")) {
-                return mod;
-            }
-        }
-
-        return "computercraft";
-    }
 
     public HMDBrain getOrCreateBrain(ServerLevel level, HMDHolder holder, ItemStack stack) {
         try {ServerContext.get(level.getServer());} catch (Exception e) {return null;}
@@ -270,33 +203,6 @@ public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, I
         return getServerComputer(ServerContext.get(server).registry(), stack);
     }
 
-    public void onCraftedBy(ItemStack stack, Level level, Player player) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null) {
-            MinecraftServer server = level.getServer();
-            if (server != null) {
-                HMDServerComputer computer = getServerComputer(server, stack);
-                if (computer != null) {
-                    computer.getBrain().setUpgrade(getUpgradeWithData(stack));
-                }
-            }
-
-        }
-    }
-
-    private static void setComputerID(ItemStack stack, int computerID) {
-        stack.getOrCreateTag().putInt("ComputerId", computerID);
-    }
-
-    @Nullable
-    public String getLabel(ItemStack stack) {
-        return IComputerItem.super.getLabel(stack);
-    }
-
-    public ComputerFamily getFamily() {
-        return this.family;
-    }
-
     public ItemStack changeItem(ItemStack stack, Item newItem) {
         ItemStack var10000;
         if (newItem instanceof HMDPocketItem pocket) {
@@ -306,38 +212,6 @@ public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, I
         }
 
         return var10000;
-    }
-
-    public boolean setLabel(ItemStack stack, @Nullable String label) {
-        if (label != null) {
-            stack.setHoverName(Component.literal(label));
-        } else {
-            stack.resetHoverName();
-        }
-
-        return true;
-    }
-
-    @Nullable
-    public Mount createDataMount(ItemStack stack, ServerLevel level) {
-        int id = this.getComputerID(stack);
-        return id >= 0 ? ComputerCraftAPI.createSaveDirMount(level.getServer(), "computer/" + id, (long)Config.computerSpaceLimit) : null;
-    }
-
-    @Nullable
-    public static UUID getInstanceID(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
-        return nbt != null && nbt.hasUUID("InstanceId") ? nbt.getUUID("InstanceId") : null;
-    }
-
-    private static int getSessionID(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
-        return nbt != null && nbt.contains("SessionId") ? nbt.getInt("SessionId") : -1;
-    }
-
-    private static boolean isMarkedOn(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
-        return nbt != null && nbt.getBoolean("On");
     }
 
     @Nullable
@@ -367,10 +241,6 @@ public class HMDPocketItem extends ArmorItem implements IComputerItem, IMedia, I
             compound.put("UpgradeInfo", upgrade.data().copy());
         }
 
-    }
-
-    public static CompoundTag getUpgradeInfo(ItemStack stack) {
-        return stack.getOrCreateTagElement("UpgradeInfo");
     }
 }
 

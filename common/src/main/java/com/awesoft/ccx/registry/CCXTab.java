@@ -31,6 +31,7 @@ public class CCXTab {
                         output.accept(CCXBlocks.USB_PORT.get());
                         output.accept(CCXItems.FAKE_USB.get());
                         output.accept(CCXItems.WIRELESS_USB.get());
+                        output.accept(CCXBlocks.TURTLE_COMMAND_ITEM.get());
                     })
                     .build()
     );

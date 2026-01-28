@@ -2,6 +2,7 @@ package com.awesoft.ccx_pocket.item.hmd;
 
 import com.awesoft.ccx.block.rack.RackBlockEntity;
 import com.awesoft.ccx_pocket.CCXPocket;
+import com.awesoft.ccx_pocket.item.base.BasePocketHolder;
 import dan200.computercraft.shared.computer.core.ServerComputer;
 import dan200.computercraft.shared.lectern.CustomLecternBlockEntity;
 import dan200.computercraft.shared.util.BlockEntityHelpers;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.Vec3;
 
-public sealed interface HMDHolder {
+public interface HMDHolder extends BasePocketHolder {
     ServerLevel level();
 
     Vec3 pos();

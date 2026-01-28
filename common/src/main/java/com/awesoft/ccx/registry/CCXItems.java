@@ -8,10 +8,17 @@ import com.awesoft.ccx.item.pciecards.ChestCardItem;
 import com.awesoft.ccx.item.pciecards.PeripheralCardItem;
 import com.awesoft.ccx.item.rack.server.ServerPocketItem;
 import dan200.computercraft.shared.computer.core.ComputerFamily;
+import dan200.computercraft.shared.platform.PlatformHelper;
+import dan200.computercraft.shared.platform.RegistrationHelper;
+import dan200.computercraft.shared.platform.RegistryEntry;
+import dan200.computercraft.shared.turtle.items.TurtleItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+
+import java.util.function.BiFunction;
 
 public class CCXItems {
     public static final DeferredRegister<Item> ITEMS =
@@ -54,6 +61,8 @@ public class CCXItems {
     public static final RegistrySupplier<Item> WIRELESS_USB = ITEMS.register("wireless_usb",
             () -> new Item(new Item.Properties().stacksTo(1))
     );
+
+
 
     public static void register() {
         ITEMS.register();

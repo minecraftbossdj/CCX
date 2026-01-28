@@ -1,5 +1,8 @@
 package com.awesoft.ccx_pocket.item.hmd;
 
+import com.awesoft.ccx_pocket.item.base.BasePocketBrain;
+import com.awesoft.ccx_pocket.item.base.BasePocketHolder;
+import com.awesoft.ccx_pocket.item.base.BasePocketServerComputer;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.pocket.IPocketAccess;
 import dan200.computercraft.api.pocket.IPocketUpgrade;
@@ -21,22 +24,22 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public final class HMDBrain implements IPocketAccess {
+public final class HMDBrain extends BasePocketBrain {
     private final HMDServerComputer computer;
     private HMDHolder holder;
-    private Vec3 position;
-    private boolean dirty = false;
-    @Nullable
-    private UpgradeData<IPocketUpgrade> upgrade;
-    private int colour = -1;
-    private int lightColour = -1;
 
     public HMDBrain(HMDHolder holder, @Nullable UpgradeData<IPocketUpgrade> upgrade, ServerComputer.Properties properties) {
-        this.computer = new HMDServerComputer(this, holder, properties);
+        super(holder, upgrade, properties);
+        this.computer = (HMDServerComputer) super.computer(); //this feels jank as im not sure if its ALWAYS gonna be HMDServerComputer but eh whatever
         this.holder = holder;
         this.position = holder.pos();
         this.upgrade = UpgradeData.copyOf(upgrade);
         this.invalidatePeripheral();
+    }
+
+    @Override
+    public BasePocketServerComputer createComputer(BasePocketBrain brain, BasePocketHolder holder, ServerComputer.Properties properties) {
+        return new HMDServerComputer(this, (HMDHolder) holder, properties);
     }
 
     public HMDServerComputer computer() {
@@ -69,26 +72,8 @@ public final class HMDBrain implements IPocketAccess {
         }
     }
 
-    public boolean updateItem(ItemStack stack) {
-        if (!this.dirty) {
-            return false;
-        } else {
-            this.dirty = false;
-            IColouredItem.setColourBasic(stack, this.colour);
-            HMDPocketItem.setUpgrade(stack, UpgradeData.copyOf(this.upgrade));
-            return true;
-        }
-    }
-
-    public ServerLevel getLevel() {
-        return this.computer.getLevel();
-    }
-
-    public Vec3 getPosition() {
-        return this.position;
-    }
-
     @Nullable
+    @Override
     public Entity getEntity() {
         HMDHolder var2 = this.holder;
         Entity var10000;
@@ -101,64 +86,5 @@ public final class HMDBrain implements IPocketAccess {
 
         var10000 = null;
         return var10000;
-    }
-
-    public int getColour() {
-        return this.colour;
-    }
-
-    public void setColour(int colour) {
-        if (this.colour != colour) {
-            this.dirty = true;
-            this.colour = colour;
-        }
-    }
-
-    public int getLight() {
-        return this.lightColour;
-    }
-
-    public void setLight(int colour) {
-        if (colour < 0 || colour > 16777215) {
-            colour = -1;
-        }
-
-        this.lightColour = colour;
-    }
-
-    public CompoundTag getUpgradeNBTData() {
-        UpgradeData<IPocketUpgrade> upgrade = this.upgrade;
-        return upgrade == null ? new CompoundTag() : upgrade.data();
-    }
-
-    public void updateUpgradeNBTData() {
-        this.dirty = true;
-    }
-
-    public void invalidatePeripheral() {
-        IPeripheral peripheral = this.upgrade == null ? null : ((IPocketUpgrade)this.upgrade.upgrade()).createPeripheral(this);
-        this.computer.setPeripheral(ComputerSide.BACK, peripheral);
-    }
-
-    /** @deprecated */
-    @Deprecated(
-            forRemoval = true
-    )
-    public Map<ResourceLocation, IPeripheral> getUpgrades() {
-        UpgradeData<IPocketUpgrade> upgrade = this.upgrade;
-        return upgrade == null ? Map.of() : Collections.singletonMap(((IPocketUpgrade)upgrade.upgrade()).getUpgradeID(), this.computer.getPeripheral(ComputerSide.BACK));
-    }
-
-    @Nullable
-    public UpgradeData<IPocketUpgrade> getUpgrade() {
-        return this.upgrade;
-    }
-
-    public void setUpgrade(@Nullable UpgradeData<IPocketUpgrade> upgrade) {
-        if (!Objects.equals(this.upgrade, upgrade)) {
-            this.upgrade = UpgradeData.copyOf(upgrade);
-            this.dirty = true;
-            this.invalidatePeripheral();
-        }
     }
 }

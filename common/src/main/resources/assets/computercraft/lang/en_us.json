@@ -1,0 +1,5 @@
+{
+  "block.computercraft.turtle_command": "Command Turtle",
+  "block.computercraft.turtle_command.upgraded": "Command %s Turtle",
+  "block.computercraft.turtle_command.upgraded_twice": "Command %s %s Turtle"
+}

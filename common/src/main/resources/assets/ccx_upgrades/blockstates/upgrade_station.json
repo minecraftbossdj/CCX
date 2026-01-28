@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east": {"model": "ccx_upgrades:block/upgrade_station", "y": 90},
+    "facing=north": {"model": "ccx_upgrades:block/upgrade_station", "y": 0},
+    "facing=south": {"model": "ccx_upgrades:block/upgrade_station", "y": 180},
+    "facing=west": {"model": "ccx_upgrades:block/upgrade_station", "y": 270}
+  }
+}

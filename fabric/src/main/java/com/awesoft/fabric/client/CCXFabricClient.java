@@ -8,6 +8,7 @@ import com.awesoft.ccx_drones.client.screen.DroneScreen;
 import com.awesoft.ccx_drones.registry.CCXDMenu;
 import com.awesoft.ccx_pocket.CCXPocket;
 import com.awesoft.ccx_pocket.CCXPocketClient;
+import com.awesoft.ccx_upgrades.client.CCXUClient;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -17,6 +18,7 @@ public final class CCXFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         //BlockEntityRendererRegistry.register(CCXBlockEntities.RACK_ENTITY.get(), RackRenderer::new);
         CCXClient.BERendererRegister();
+        CCXUClient.INSTANCE.BERendererRegister();
         MenuScreens.register(
                 CCXDMenu.DRONE_MENU.get(),
                 DroneScreen::new
@@ -24,5 +26,6 @@ public final class CCXFabricClient implements ClientModInitializer {
         CCXClient.init();
         CCXDronesClient.init();
         CCXPocketClient.init();
+        CCXUClient.INSTANCE.init();
     }
 }

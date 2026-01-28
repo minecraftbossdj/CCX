@@ -9,6 +9,7 @@ import com.awesoft.ccx_drones.client.screen.DroneScreen;
 import com.awesoft.ccx_drones.registry.CCXDEntities;
 import com.awesoft.ccx_drones.registry.CCXDMenu;
 import com.awesoft.ccx_pocket.CCXPocketClient;
+import com.awesoft.ccx_upgrades.client.CCXUClient;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -26,6 +27,7 @@ public class CCXForgeClient {
     public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
         //event.registerBlockEntityRenderer(CCXBlockEntities.RACK_ENTITY.get(), RackRenderer::new);
         CCXClient.BERendererRegister();
+        CCXUClient.INSTANCE.BERendererRegister();
     }
 
     @SubscribeEvent
@@ -38,6 +40,7 @@ public class CCXForgeClient {
         });
         CCXClient.init();
         CCXPocketClient.init();
+        CCXUClient.INSTANCE.init();
     }
 
     @SubscribeEvent

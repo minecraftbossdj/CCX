@@ -1,5 +1,6 @@
 package com.awesoft.ccx_pocket.item.PocketPack;
 
+import com.awesoft.ccx_pocket.item.base.BasePocketServerComputer;
 import com.awesoft.ccx_pocket.registry.CCXPComponents;
 import dan200.computercraft.api.component.ComputerComponents;
 import dan200.computercraft.shared.computer.core.ComputerState;
@@ -12,15 +13,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public final class PocketPackServerComputer extends ServerComputer {
+public final class PocketPackServerComputer extends BasePocketServerComputer {
     private final PocketPackBrain brain;
-    private int oldLightColour = -1;
-    @Nullable
-    private ComputerState oldComputerState;
-    private Set<ServerPlayer> tracking = Set.of();
 
     PocketPackServerComputer(PocketPackBrain brain, PocketPackHolder holder, Properties properties) {
-        super(holder.level(), holder.blockPos(), properties
+        super(brain, holder, properties
                 .terminalSize((Integer)ConfigSpec.computerTermWidth.get(), (Integer)ConfigSpec.computerTermHeight.get())
                 .addComponent(ComputerComponents.POCKET, brain)
                 .addComponent(CCXPComponents.POCKETPACKAPI, brain)
@@ -30,12 +27,6 @@ public final class PocketPackServerComputer extends ServerComputer {
 
     public PocketPackBrain getBrain() {
         return this.brain;
-    }
-
-
-    protected void onRemoved() {
-        super.onRemoved();
-        ServerNetworking.sendToAllPlayers(new PocketComputerDeletedClientMessage(this.getInstanceUUID()), this.getLevel().getServer());
     }
 }
 

@@ -1,5 +1,6 @@
 package com.awesoft.ccx_pocket.item.hmd;
 
+import com.awesoft.ccx_pocket.item.base.BasePocketServerComputer;
 import com.awesoft.ccx_pocket.registry.CCXPComponents;
 import dan200.computercraft.api.component.ComputerComponent;
 import dan200.computercraft.api.component.ComputerComponents;
@@ -13,15 +14,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public final class HMDServerComputer extends ServerComputer {
+public final class HMDServerComputer extends BasePocketServerComputer {
     private final HMDBrain brain;
-    private int oldLightColour = -1;
-    @Nullable
-    private ComputerState oldComputerState;
-    private Set<ServerPlayer> tracking = Set.of();
 
     HMDServerComputer(HMDBrain brain, HMDHolder holder, Properties properties) {
-        super(holder.level(), holder.blockPos(), properties
+        super(brain, holder, properties
                 .terminalSize((Integer)ConfigSpec.computerTermWidth.get(), (Integer)ConfigSpec.computerTermHeight.get())
                 .addComponent(ComputerComponents.POCKET, brain)
                 .addComponent(CCXPComponents.HMDAPI, brain)
@@ -31,12 +28,6 @@ public final class HMDServerComputer extends ServerComputer {
 
     public HMDBrain getBrain() {
         return this.brain;
-    }
-
-
-    protected void onRemoved() {
-        super.onRemoved();
-        ServerNetworking.sendToAllPlayers(new PocketComputerDeletedClientMessage(this.getInstanceUUID()), this.getLevel().getServer());
     }
 }
 

@@ -1,5 +1,6 @@
 package com.awesoft.ccx_pocket.item.PocketPack;
 
+import com.awesoft.ccx_pocket.item.base.BasePocketHolder;
 import dan200.computercraft.shared.computer.core.ServerComputer;
 import dan200.computercraft.shared.lectern.CustomLecternBlockEntity;
 import dan200.computercraft.shared.util.BlockEntityHelpers;
@@ -11,7 +12,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.Vec3;
 
-public sealed interface PocketPackHolder {
+public interface PocketPackHolder extends BasePocketHolder {
     ServerLevel level();
 
     Vec3 pos();
@@ -21,10 +22,6 @@ public sealed interface PocketPackHolder {
     boolean isValid(ServerComputer var1);
 
     void setChanged();
-
-    default boolean isTerminalAlwaysVisible() {
-        return false;
-    }
 
     public sealed interface EntityHolder extends PocketPackHolder permits ChestplateHolder, ItemEntityHolder, PlayerHolder {
         Entity entity();
@@ -54,7 +51,6 @@ public sealed interface PocketPackHolder {
 
     public static record ChestplateHolder(ServerPlayer entity) implements EntityHolder {
         public boolean isValid(ServerComputer computer) {
-            //CCXPocket.LOGGER.info(HMDPocketItem.isServerComputer(computer, this.entity().getItemBySlot(EquipmentSlot.HEAD)));
             return this.entity().isAlive() && PocketPackItem.isServerComputer(computer, this.entity().getItemBySlot(EquipmentSlot.CHEST));
         }
 

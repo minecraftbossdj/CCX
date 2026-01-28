@@ -1,6 +1,10 @@
 package com.awesoft.ccx_drones.api;
 
 import com.awesoft.ccx_drones.entity.drone.DroneEntity;
+import com.awesoft.ccx_drones.luaFunctions.CarryUpgrade;
+import com.awesoft.ccx_drones.luaFunctions.MiningUpgrade;
+import com.awesoft.ccx_drones.luaFunctions.ModemUpgrade;
+import com.awesoft.ccx_drones.luaFunctions.SurveryUpgrade;
 import dan200.computercraft.api.detail.BlockReference;
 import dan200.computercraft.api.detail.VanillaDetailRegistries;
 import dan200.computercraft.api.lua.ILuaAPI;
@@ -105,119 +109,20 @@ public class DroneAPI implements ILuaAPI {
     public final Map<String, Object> getUpgradesFunctions() {
         Map<String, Object> info = new HashMap<>();
 
-        ILuaFunction breakForward = args -> {
-            if(drone.hasUpgrade("ccx_drones:mine_upgrade")) {
-                ClipContext context = new ClipContext(drone.getOnPos().getCenter(), drone.getOnPos().getCenter().add(drone.getForward().multiply(3, 3, 3)), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, drone);
-                BlockHitResult result = drone.level().clip(context);
-
-                drone.level().destroyBlock(result.getBlockPos(), true, drone);
-                return MethodResult.of(true, "Broke Block!");
-            } else {
-                return MethodResult.of(false, "Mining Upgrade not installed!");
-            }
-        };
         if(drone.hasUpgrade("ccx_drones:mine_upgrade")) {
-            info.put("breakForward", breakForward);
+            info = new MiningUpgrade(drone).getMethods(info);
         }
-
-        ILuaFunction pickupBlock = args -> {
-            if (drone.hasUpgrade("ccx_drones:carry_upgrade")) {
-                ClipContext context = new ClipContext(drone.getOnPos().getCenter(), drone.getOnPos().getCenter().add(0, -2, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, drone);
-                BlockHitResult result = drone.level().clip(context);
-
-                drone.setCarrying(result.getBlockPos());
-                return MethodResult.of(true, "Picked Up Block!");
-            } else {
-                return MethodResult.of(false, "Carry Upgrade not installed!");
-            }
-        };
-
-        ILuaFunction dropBlock = args -> {
-            if (drone.hasUpgrade("ccx_drones:carry_upgrade")) {
-                ClipContext context = new ClipContext(drone.getOnPos().getCenter(), drone.getOnPos().getCenter().add(0, -2, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, drone);
-                BlockHitResult result = drone.level().clip(context);
-
-                drone.dropCarrying(result.getBlockPos().above());
-                return MethodResult.of(true, "Dropped Block!");
-            } else {
-                return MethodResult.of(false, "Carry Upgrade not installed!");
-            }
-        };
-
-        ILuaFunction pickUpEntity = args -> {
-            if(drone.hasUpgrade("ccx_drones:carry_upgrade")) {
-                List<Entity> targets = drone.level().getEntitiesOfClass(Entity.class,new AABB(drone.getOnPos().offset(-2,-2,-2),drone.getOnPos().offset(2,0,2)));
-                if(!targets.isEmpty()) {
-                    targets.get(drone.getRandom().nextInt(targets.size())).startRiding(drone);
-                    return MethodResult.of(true, "Picked up Entity!");
-                } else {
-                    return MethodResult.of(false, "No Entities Nearby!");
-                }
-
-            } else {
-                return MethodResult.of(false, "Carry Upgrade Not Installed!");
-            }
-        };
-
-        ILuaFunction dropEntity = args -> {
-            if(drone.hasUpgrade("ccx_drones:carry_upgrade")) {
-                if(!drone.getPassengers().isEmpty()) {
-                    drone.ejectPassengers();
-                    return MethodResult.of(true,"Ejected Passenger!");
-                } else {
-                    return MethodResult.of(false, "No Passengers!");
-                }
-            } else {
-                return MethodResult.of(false, "Carry Upgrade Not Installed!");
-            }
-        };
 
         if(drone.hasUpgrade("ccx_drones:carry_upgrade")) {
-            info.put("pickupBlock", pickupBlock);
-            info.put("dropBlock", dropBlock);
-            info.put("pickupEntity",pickUpEntity);
-            info.put("dropEntity",dropEntity);
+            info = new CarryUpgrade(drone).getMethods(info);
         }
-
-        ILuaFunction getPos = args -> {
-            if (drone.hasUpgrade("ccx_drones:modem_upgrade")) {
-                Map<String, Object> posinfo = new HashMap<>();
-                posinfo.put("x", drone.position().x);
-                posinfo.put("y", drone.position().y);
-                posinfo.put("z", drone.position().z);
-                return MethodResult.of(true,posinfo);
-            }
-            return MethodResult.of(false,"Modem Upgrade Not Installed!");
-        };
 
         if (drone.hasUpgrade("ccx_drones:modem_upgrade")) {
-            info.put("getPos",getPos);
+            info = new ModemUpgrade(drone).getMethods(info);
         }
 
-        ILuaFunction raycast = args -> {
-            Vec3 start = drone.getEyePosition(0f);
-
-            Vec3 end = start.add(drone.getForward().scale(5));
-
-            ClipContext context = new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, drone);
-
-            BlockHitResult result = drone.level().clip(context);
-            if (result.getType() == HitResult.Type.BLOCK) {
-                BlockPos pos = result.getBlockPos();
-                Block block = drone.level().getBlockState(pos).getBlock();
-
-                Map<String, Object> blockinfo = new HashMap<>();
-                blockinfo.put("id",(BuiltInRegistries.BLOCK.getKey(block)).toString());
-                blockinfo.put("distance",start.distanceTo(result.getLocation()));
-
-                return MethodResult.of(true,blockinfo);
-            } else {
-                return MethodResult.of(false, "Raycast hit non block!");
-            }
-        };
-
         if (drone.hasUpgrade("ccx_drones:survey_upgrade")) {
-            info.put("raycast",raycast);
+            info = new SurveryUpgrade(drone).getMethods(info);
         }
 
         return info;

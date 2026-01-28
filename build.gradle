@@ -2,6 +2,7 @@ plugins {
     id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4.162'
     id 'com.gradleup.shadow' version '8.3.6' apply false
+    id "org.jetbrains.kotlin.jvm" version "1.9.22" apply false
 }
 
 architectury {
@@ -29,6 +30,11 @@ subprojects {
             content {
                 includeGroup("cc.tweaked")
             }
+        }
+        maven {
+            name = 'Kotlin for Forge'
+            url = 'https://thedarkcolour.github.io/KotlinForForge/'
+            content { includeGroup "thedarkcolour" }
         }
         maven {
             name "Architectury"

@@ -7,6 +7,7 @@ import com.awesoft.ccx_drones.client.screen.DroneScreen;
 import com.awesoft.ccx_drones.registry.CCXDMenu;
 import com.awesoft.ccx_pocket.CCXPocket;
 import com.awesoft.ccx_pocket.CCXPocketClient;
+import com.awesoft.ccx_upgrades.CCXUpgrades;
 import com.awesoft.forge.peripheral.CCXPeripheralAccessForge;
 import com.awesoft.forge.peripheral.PeripheralRegistryForge;
 import dev.architectury.platform.forge.EventBuses;
@@ -25,6 +26,7 @@ public final class CCXForge {
         EventBuses.registerModEventBus(CCX.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         EventBuses.registerModEventBus(CCXDrones.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         EventBuses.registerModEventBus(CCXPocket.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        EventBuses.registerModEventBus(CCXUpgrades.INSTANCE.getMOD_ID(), FMLJavaModLoadingContext.get().getModEventBus());
 
         PeripheralAccessProvider.register(new CCXPeripheralAccessForge());
 

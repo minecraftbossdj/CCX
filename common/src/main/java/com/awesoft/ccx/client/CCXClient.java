@@ -6,8 +6,11 @@ import com.awesoft.ccx.client.renderer.PCReaderRenderer;
 import com.awesoft.ccx.client.renderer.RackRenderer;
 import com.awesoft.ccx.client.renderer.UsbPortRenderer;
 import com.awesoft.ccx.registry.CCXBlockEntities;
+import com.awesoft.ccx.registry.CCXBlocks;
 import com.awesoft.ccx_drones.client.CCXDronesClient;
+import dan200.computercraft.client.render.TurtleBlockEntityRenderer;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 
 
 public class CCXClient {
@@ -20,5 +23,6 @@ public class CCXClient {
         BlockEntityRendererRegistry.register(CCXBlockEntities.PCIE_HUB_ENTITY.get(), PCIeRenderer::new);
         BlockEntityRendererRegistry.register(CCXBlockEntities.PC_READER_ENTITY.get(), PCReaderRenderer::new);
         BlockEntityRendererRegistry.register(CCXBlockEntities.USB_PORT_ENTITY.get(), UsbPortRenderer::new);
+        BlockEntityRendererRegistry.register(CCXBlocks.TURTLE_COMMAND_ENTITY.get(), TurtleBlockEntityRenderer::new);
     }
 }
