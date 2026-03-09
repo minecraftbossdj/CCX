@@ -5,6 +5,7 @@ import com.awesoft.ccx.registry.CCXBlocks;
 import com.awesoft.ccx.registry.CCXItems;
 import com.awesoft.ccx.registry.CCXTab;
 import com.awesoft.ccx_drones.registry.*;
+import dev.architectury.platform.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +21,9 @@ public class CCXDrones {
         CCXDMenu.register();
         CCXDTab.register();
         LOGGER.info("CCX: Drones successfully loaded!");
+        if (Platform.getMod("computercraft").getVersion().contains("1.117.")) {
+            CCXDrones.LOGGER.warn("WARNING: CC VERSION IS 1.117.x, PREPARE FOR UNFORESEEN CONSEQUENCES..."); //bro is NOT GMAN :sob:
+        }
     } //im ngl, most this code is ported over from "my" other mod, CC:Drones+
 
 }

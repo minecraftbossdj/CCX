@@ -51,40 +51,58 @@ public class DroneScreen extends AbstractComputerScreen<DroneMenu> {
         graphics.flush();
     }
 
-    private static Field COMPUTER_OPTIONS_FIELD;
+    private static Field COMPUTER_ACTIONS;
+    private static Field COMPUTER_INPUT;
 
     static {
         try {
-            COMPUTER_OPTIONS_FIELD =
+            COMPUTER_ACTIONS =
                     AbstractComputerScreen.class.getDeclaredField("computerActions");
-            COMPUTER_OPTIONS_FIELD.setAccessible(true);
+            COMPUTER_ACTIONS.setAccessible(true);
+
+            COMPUTER_INPUT = AbstractComputerScreen.class.getDeclaredField("computerInput");
+            COMPUTER_INPUT.setAccessible(true);
         } catch (NoSuchFieldException ignored) {
-            COMPUTER_OPTIONS_FIELD = null;
+            COMPUTER_ACTIONS = null;
+            COMPUTER_INPUT = null;
         }
 
         try {
             Class<?> computerActionsClass = Class.forName(
                     "dan200.computercraft.client.gui.ClientComputerActions"
             );
+            Class<?> computerInputClass = Class.forName(
+                    "dan200.computercraft.core.input.UserComputerInput"
+            );
             NEW_CCTERM = TerminalWidget.class.getConstructor(
                     Terminal.class,
-                    InputHandler.class,
+                    computerInputClass,
                     computerActionsClass,
                     int.class,
                     int.class
             );
         } catch (NoSuchMethodException e) {
-            CCXDrones.LOGGER.warn("yo guess what: "+e);
+            CCXDrones.LOGGER.warn("Error occured while getting variables: "+e);
         } catch (ClassNotFoundException e) {
-            CCXDrones.LOGGER.warn("yo guess what: "+e);
+            CCXDrones.LOGGER.warn("Errored occured while getting variables: "+e);
         }
     }
 
     @Nullable
     protected Object getComputerOptions() {
-        if (COMPUTER_OPTIONS_FIELD == null) return null;
+        if (COMPUTER_ACTIONS == null) return null;
         try {
-            return COMPUTER_OPTIONS_FIELD.get(this);
+            return COMPUTER_ACTIONS.get(this);
+        } catch (IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    @Nullable
+    protected Object getComputerInput() {
+        if (COMPUTER_INPUT == null) return null;
+        try {
+            return COMPUTER_INPUT.get(this);
         } catch (IllegalAccessException e) {
             return null;
         }
@@ -95,18 +113,17 @@ public class DroneScreen extends AbstractComputerScreen<DroneMenu> {
 
     @Override
     protected TerminalWidget createTerminal() {
-        if (Platform.getMod("computercraft").getVersion().equals("1.117.0")) {
-            CCXDrones.LOGGER.warn("WARNING: CC VERSION IS 1.117.0, STUFF MIGHT BREAK.");
+        if (Platform.getMod("computercraft").getVersion().contains("1.117.")) {
             try {
                 return NEW_CCTERM.newInstance(
                         terminalData,
-                        input,
+                        getComputerInput(),
                         getComputerOptions(),
                         leftPos + BORDER + AbstractComputerMenu.SIDEBAR_WIDTH,
                         topPos + BORDER
                 );
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                CCXDrones.LOGGER.warn("gulp lmao " + e);
+                CCXDrones.LOGGER.warn("Error occured: " + e);
             }
         }
         return new TerminalWidget(terminalData, input, leftPos + BORDER + AbstractComputerMenu.SIDEBAR_WIDTH, topPos + BORDER);
